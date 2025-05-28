@@ -1,0 +1,7 @@
+ulid:
+  name: "ulid"
+  in: "query"
+  required: true
+  description: "機器をULIDの形式で指定します"
+  schema:
+    $ref: "../schemas/index.yaml#/Ulid"

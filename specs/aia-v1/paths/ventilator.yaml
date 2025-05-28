@@ -1,0 +1,63 @@
+get:
+  tags:
+    - ventilator
+  security:
+    - bearerAuth: []
+  summary: ベンチレーターの状態を取得する
+  operationId: getVentilatorStatus
+  parameters:
+    - $ref: ../components/parameters/index.yaml#/ulid
+  responses:
+    "200":
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ventilator.yaml#/VentilatorStatus
+    "400":
+      $ref: ../../common/responses/4xx.yaml#/BadRequest
+    "401":
+      $ref: ../../common/responses/4xx.yaml#/Unauthorized
+    "404":
+      $ref: ../../common/responses/4xx.yaml#/NotFound
+    "500":
+      $ref: ../../common/responses/5xx.yaml#/InternalServerError
+
+put:
+  tags:
+    - ventilator
+  security:
+    - bearerAuth: []
+  summary: ベンチレーターの開度を設定する
+  description: ベンチレーターの開度を0から100%で指定します
+  operationId: updateVentilatorOpening
+  requestBody:
+    description: ベンチレーターの開度を設定するリクエスト
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - ulid
+            - percent
+          properties:
+            ulid:
+              $ref: ../components/schemas/index.yaml#/Ulid
+            percent:
+              $ref: ../components/schemas/ventilator.yaml#/VentilatorPercent
+  responses:
+    "200":
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/ventilator.yaml#/VentilatorStatus
+    "400":
+      $ref: ../../common/responses/4xx.yaml#/BadRequest
+    "401":
+      $ref: ../../common/responses/4xx.yaml#/Unauthorized
+    "404":
+      $ref: ../../common/responses/4xx.yaml#/NotFound
+    "500":
+      $ref: ../../common/responses/5xx.yaml#/InternalServerError

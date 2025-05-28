@@ -1,0 +1,38 @@
+put:
+  tags:
+    - aircon
+  security:
+    - bearerAuth: []
+  summary: 空調のモードを更新する
+  description: '運転モードを設定します。0: 運転停止  1: 冷房  2: 暖房  3: 送風'
+  operationId: updateAirconMode
+  requestBody:
+    description: 空調のモードを更新するリクエスト
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - ulid
+            - mode
+          properties:
+            ulid:
+              $ref: ../components/schemas/index.yaml#/Ulid
+            mode:
+              $ref: ../components/schemas/aircon.yaml#/AirconMode
+  responses:
+    "200":
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/index.yaml#/OperationResult
+    "400":
+      $ref: ../../common/responses/4xx.yaml#/BadRequest
+    "401":
+      $ref: ../../common/responses/4xx.yaml#/Unauthorized
+    "404":
+      $ref: ../../common/responses/4xx.yaml#/NotFound
+    "500":
+      $ref: ../../common/responses/5xx.yaml#/InternalServerError

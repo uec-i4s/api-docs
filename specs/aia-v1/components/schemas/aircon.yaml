@@ -1,0 +1,14 @@
+AirconMode:
+  type: integer
+  minimum: 0
+  maximum: 3
+  example: 2
+  description: '運転モード: 0=運転停止, 1=冷房, 2=暖房, 3=送風'
+
+AirconTemperature:
+  type: number
+  format: float
+  minimum: 18.0
+  maximum: 28.0
+  example: 24.0
+  description: 設定温度（℃）

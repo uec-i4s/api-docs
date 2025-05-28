@@ -1,0 +1,47 @@
+openapi: 3.0.3
+info:
+  title: UEC Library AIA API
+  description: AIA (Air conditioning, Illumination, Air quality) control API for UEC Library
+  version: 0.3.0
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  contact:
+    name: UEC i4s
+    url: http://i4s.uec.ac.jp
+servers:
+  - url: http://openapi.i4s.uec.ac.jp/api
+    description: Production server via API Gateway
+  - url: http://openapi.i4s.uec.ac.jp:8889
+    description: Development server
+
+security:
+  - bearerAuth: []
+
+paths:
+  /v1/aia/aircon:
+    $ref: ./paths/aircon.yaml
+  /v1/aia/aircon/mode:
+    $ref: ./paths/aircon-mode.yaml
+  /v1/aia/aircon/temp:
+    $ref: ./paths/aircon-temp.yaml
+  /v1/aia/light:
+    $ref: ./paths/light.yaml
+  /v1/AIA/Ventilator:
+    $ref: ./paths/ventilator.yaml
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Bearer token authentication
+
+tags:
+  - name: aircon
+    description: Air conditioning control operations
+  - name: light
+    description: Lighting control operations
+  - name: ventilator
+    description: Ventilator control operations
