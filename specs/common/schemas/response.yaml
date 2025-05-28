@@ -1,0 +1,15 @@
+ErrorResponse:
+  type: object
+  required:
+    - error
+    - message
+  properties:
+    error:
+      type: string
+      example: INVALID_REQUEST
+    message:
+      type: string
+      example: The request parameters are invalid
+    details:
+      type: object
+      additionalProperties: true

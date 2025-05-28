@@ -1,0 +1,29 @@
+BadRequest:
+  description: Bad Request - 不正なリクエスト
+  content:
+    application/json:
+      schema:
+        $ref: ../schemas/response.yaml#/ErrorResponse
+      example:
+        error: INVALID_REQUEST
+        message: リクエストパラメータが不正です
+
+Unauthorized:
+  description: Unauthorized - 認証が必要です
+  content:
+    application/json:
+      schema:
+        $ref: ../schemas/response.yaml#/ErrorResponse
+      example:
+        error: UNAUTHORIZED
+        message: 有効な認証トークンが必要です
+
+NotFound:
+  description: Not Found - 指定されたリソースが見つかりません
+  content:
+    application/json:
+      schema:
+        $ref: ../schemas/response.yaml#/ErrorResponse
+      example:
+        error: NOT_FOUND
+        message: 指定されたULIDの機器が見つかりません
