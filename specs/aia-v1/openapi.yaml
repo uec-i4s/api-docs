@@ -27,7 +27,7 @@ paths:
     $ref: ./paths/aircon-temp.yaml
   /v1/aia/light:
     $ref: ./paths/light.yaml
-  /v1/AIA/Ventilator:
+  /v1/aia/ventilator:
     $ref: ./paths/ventilator.yaml
 
 components:
