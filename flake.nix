@@ -25,8 +25,11 @@
       {
         devShells.default = pkgs.mkShellNoCC {
           packages = with pkgs; [
-            nil
             redocly
+            nodejs_22
+            pnpm
+            nil
+            typescript-language-server
           ];
         };
 
