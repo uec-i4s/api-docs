@@ -16,5 +16,17 @@
   },
   "dependencies": {
     "swagger-ui": "5.22.0"
+  },
+  "pnpm": {
+    "ignoredBuiltDependencies": [
+      "@scarf/scarf"
+    ],
+    "onlyBuiltDependencies": [
+      "@tree-sitter-grammars/tree-sitter-yaml",
+      "core-js-pure",
+      "esbuild",
+      "tree-sitter",
+      "tree-sitter-json"
+    ]
   }
 }
