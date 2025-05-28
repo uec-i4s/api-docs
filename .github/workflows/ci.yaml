@@ -8,30 +8,31 @@ on:
   workflow_dispatch:
 
 jobs:
-  lint:
-    name: Lint
+  spec-lint:
+    name: Spec Lint
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
-      - name: Install Nix
-        uses: nixbuild/nix-quick-install-action@5bb6a3b3abe66fd09bbf250dce8ada94f856a703 # v30
-        with:
-          nix_conf: |
-            keep-env-derivations = true
-            keep-outputs = true
-
-      - name: Cache Nix store
-        uses: nix-community/cache-nix-action@135667ec418502fa5a3598af6fb9eb733888ce6a # v6.1.3
-        with:
-          primary-key: nix-${{ runner.os }}-${{ hashFiles('**/*.nix', '**/flake.lock') }}
-          purge: true
-          purge-prefixes: nix-${{ runner.os }}-
-
-      - name: Set up devShell
-        run: nix develop
+      - name: Setup
+        uses: ./.github/actions/setup
 
       - name: redocly lint
-        run: |
-          nix develop --command redocly lint 'specs/*/openapi.yaml'
+        run: nix develop -c redocly lint 'specs/*/openapi.yaml'
+
+  ui-build:
+    name: UI Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Setup
+        uses: ./.github/actions/setup
+
+      - name: Install UI dependencies
+        run: cd ui && nix develop -c pnpm install
+
+      - name: Build UI
+        run: cd ui && nix develop -c pnpm build
