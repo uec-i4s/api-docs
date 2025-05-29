@@ -18,7 +18,7 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
 
-      - name: redocly lint
+      - name: Lint
         run: nix develop -c redocly lint 'specs/*/openapi.yaml'
 
   ui-build:
@@ -31,8 +31,16 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup
 
-      - name: Install UI dependencies
+      - name: Install  dependencies
         run: cd ui && nix develop -c pnpm install
 
-      - name: Build UI
-        run: cd ui && nix develop -c pnpm build
+      - name: Codegen
+        run: cd ui && nix develop -c pnpm run codegen
+
+      - name: Check codegen
+        run: |
+          git status --porcelain
+          test -z "$(git status --porcelain)" || (echo '❌ There are uncommitted changes after pnpm run codegen. Please run pnpm run codegen and commit the changes.' && exit 1)
+
+      - name: Build
+        run: cd ui && nix develop -c pnpm run build
