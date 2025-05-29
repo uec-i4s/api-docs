@@ -1,0 +1,25 @@
+get:
+  tags:
+    - light
+  security:
+    - bearerAuth: []
+  summary: 期間・間隔を指定して照度の時系列データを取得する。
+  operationId: getLightData
+  parameters:
+    - $ref: ../components/parameters/ulids.yaml#/lightUlid
+    - $ref: ../components/parameters/timeseries.yaml#/dataInterval
+    - $ref: ../components/parameters/timeseries.yaml#/startDateTime
+    - $ref: ../components/parameters/timeseries.yaml#/endDateTime
+  responses:
+    '200':
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/responses.yaml#/LightResponse
+    '401':
+      $ref: ../../common/v1/responses/4xx.yaml#/Unauthorized
+    '410':
+      $ref: ../../common/v1/responses/4xx.yaml#/Gone
+    '500':
+      $ref: ../../common/v1/responses/5xx.yaml#/InternalServerError

@@ -1,0 +1,171 @@
+BaseDataItem:
+  type: object
+  required:
+    - date
+  properties:
+    date:
+      type: string
+      format: date-time
+      description: データ取得日時（JST、ISO 8601形式）
+      example: "2024-12-05T18:37:38+09:00"
+
+CO2DataItem:
+  allOf:
+    - $ref: '#/BaseDataItem'
+    - type: object
+      required:
+        - co2
+      properties:
+        co2:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 10000
+          description: CO2濃度（ppm）
+          example: 440.2
+
+DiscomfortIndexDataItem:
+  allOf:
+    - $ref: '#/BaseDataItem'
+    - type: object
+      required:
+        - discomfortIndex
+      properties:
+        discomfortIndex:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 100
+          description: "不快指数"
+          example: 65.5
+
+ETVOCDataItem:
+  allOf:
+    - $ref: '#/BaseDataItem'
+    - type: object
+      required:
+        - etvoc
+      properties:
+        etvoc:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 60000
+          description: "eTVOC濃度（ppb）"
+          example: 125.0
+
+HeatstrokeDataItem:
+  allOf:
+    - $ref: '#/BaseDataItem'
+    - type: object
+      required:
+        - heatstrokeIndex
+      properties:
+        heatstrokeIndex:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 50
+          description: "熱中症指数（WBGT）"
+          example: 21.5
+
+HumanDetectionDataItem:
+  allOf:
+    - $ref: '#/BaseDataItem'
+    - type: object
+      required:
+        - detected
+      properties:
+        detected:
+          type: boolean
+          description: "人検出状態"
+          example: true
+
+HumidityDataItem:
+  allOf:
+    - $ref: '#/BaseDataItem'
+    - type: object
+      required:
+        - humidity
+      properties:
+        humidity:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 100
+          description: "相対湿度（%RH）"
+          example: 55.0
+
+LightDataItem:
+  allOf:
+    - $ref: '#/BaseDataItem'
+    - type: object
+      required:
+        - light
+      properties:
+        light:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 100000
+          description: "照度（lx）"
+          example: 300.0
+
+NumOfPeopleDataItem:
+  allOf:
+    - $ref: '#/BaseDataItem'
+    - type: object
+      required:
+        - numOfPeople
+      properties:
+        numOfPeople:
+          type: integer
+          minimum: 0
+          maximum: 1000
+          description: "検出人数"
+          example: 5
+
+PressureDataItem:
+  allOf:
+    - $ref: '#/BaseDataItem'
+    - type: object
+      required:
+        - pressure
+      properties:
+        pressure:
+          type: number
+          format: float
+          minimum: 300
+          maximum: 1100
+          description: "大気圧（hPa）"
+          example: 1013.25
+
+SoundDataItem:
+  allOf:
+    - $ref: '#/BaseDataItem'
+    - type: object
+      required:
+        - sound
+      properties:
+        sound:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 200
+          description: "音圧レベル（dB）"
+          example: 45.2
+
+TemperatureDataItem:
+  allOf:
+    - $ref: '#/BaseDataItem'
+    - type: object
+      required:
+        - temperature
+      properties:
+        temperature:
+          type: number
+          format: float
+          minimum: -50
+          maximum: 100
+          description: "温度（℃）"
+          example: 23.5

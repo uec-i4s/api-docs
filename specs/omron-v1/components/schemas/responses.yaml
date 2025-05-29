@@ -1,0 +1,142 @@
+ResponseInfo:
+  type: object
+  required:
+    - elapsedTime
+    - dataLength
+  properties:
+    elapsedTime:
+      type: integer
+      format: int32
+      minimum: 0
+      description: API内部処理時間（ミリ秒）
+      example: 25
+    dataLength:
+      type: integer
+      format: int32
+      minimum: 0
+      description: データ配列の要素数
+      example: 1
+
+SensorResponse:
+  type: object
+  required:
+    - info
+    - data
+  properties:
+    info:
+      $ref: '#/ResponseInfo'
+    data:
+      type: array
+      description: センサーデータの配列
+      items:
+        type: object
+
+CO2Response:
+  allOf:
+    - $ref: '#/SensorResponse'
+    - type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: ./sensors.yaml#/CO2DataItem
+
+DiscomfortIndexResponse:
+  allOf:
+    - $ref: '#/SensorResponse'
+    - type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: ./sensors.yaml#/DiscomfortIndexDataItem
+
+ETVOCResponse:
+  allOf:
+    - $ref: '#/SensorResponse'
+    - type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: ./sensors.yaml#/ETVOCDataItem
+
+HeatstrokeResponse:
+  allOf:
+    - $ref: '#/SensorResponse'
+    - type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: ./sensors.yaml#/HeatstrokeDataItem
+
+HumanDetectionResponse:
+  allOf:
+    - $ref: '#/SensorResponse'
+    - type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: ./sensors.yaml#/HumanDetectionDataItem
+
+HumidityResponse:
+  allOf:
+    - $ref: '#/SensorResponse'
+    - type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: ./sensors.yaml#/HumidityDataItem
+
+LightResponse:
+  allOf:
+    - $ref: '#/SensorResponse'
+    - type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: ./sensors.yaml#/LightDataItem
+
+NumOfPeopleResponse:
+  allOf:
+    - $ref: '#/SensorResponse'
+    - type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: ./sensors.yaml#/NumOfPeopleDataItem
+
+PressureResponse:
+  allOf:
+    - $ref: '#/SensorResponse'
+    - type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: ./sensors.yaml#/PressureDataItem
+
+SoundResponse:
+  allOf:
+    - $ref: '#/SensorResponse'
+    - type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: ./sensors.yaml#/SoundDataItem
+
+TemperatureResponse:
+  allOf:
+    - $ref: '#/SensorResponse'
+    - type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: ./sensors.yaml#/TemperatureDataItem

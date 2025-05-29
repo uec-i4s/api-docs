@@ -1,0 +1,25 @@
+get:
+  tags:
+    - etvoc
+  security:
+    - bearerAuth: []
+  summary: 期間・間隔を指定してeTVOCの時系列データを取得する。
+  operationId: getEtvocData
+  parameters:
+    - $ref: ../components/parameters/ulids.yaml#/etvocUlid
+    - $ref: ../components/parameters/timeseries.yaml#/dataInterval
+    - $ref: ../components/parameters/timeseries.yaml#/startDateTime
+    - $ref: ../components/parameters/timeseries.yaml#/endDateTime
+  responses:
+    '200':
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/responses.yaml#/ETVOCResponse
+    '401':
+      $ref: ../../common/v1/responses/4xx.yaml#/Unauthorized
+    '410':
+      $ref: ../../common/v1/responses/4xx.yaml#/Gone
+    '500':
+      $ref: ../../common/v1/responses/5xx.yaml#/InternalServerError

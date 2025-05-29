@@ -1,0 +1,22 @@
+get:
+  tags:
+    - humidity
+  security:
+    - bearerAuth: []
+  summary: 最新の湿度データを取得する
+  operationId: getLatestHumidityData
+  parameters:
+    - $ref: ../components/parameters/ulids.yaml#/humidityUlid
+  responses:
+    '200':
+      description: 成功レスポンス
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/responses.yaml#/HumidityResponse
+    '401':
+      $ref: ../../common/v1/responses/4xx.yaml#/Unauthorized
+    '410':
+      $ref: ../../common/v1/responses/4xx.yaml#/Gone
+    '500':
+      $ref: ../../common/v1/responses/5xx.yaml#/InternalServerError

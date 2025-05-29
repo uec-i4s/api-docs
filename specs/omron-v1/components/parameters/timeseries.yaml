@@ -1,0 +1,30 @@
+dataInterval:
+  in: query
+  name: interval
+  required: true
+  schema:
+    type: integer
+    minimum: 1
+    maximum: 86400
+    example: 180
+  description: データ取得間隔（秒）
+
+startDateTime:
+  in: query
+  name: since
+  required: true
+  schema:
+    type: string
+    format: date-time
+    example: "2024-11-01 12:00:00"
+  description: "取得するデータの開始期間（JST、形式: yyyy-MM-dd HH:mm:ss）"
+
+endDateTime:
+  in: query
+  name: until
+  required: true
+  schema:
+    type: string
+    format: date-time
+    example: "2024-11-01 15:00:00"
+  description: "取得するデータの終了期間（JST、形式: yyyy-MM-dd HH:mm:ss）"

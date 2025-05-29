@@ -1,0 +1,1039 @@
+openapi: 3.0.3
+info:
+  title: UEC OMRON Sensor API
+  description: OMRON environmental sensor data API for UEC
+  version: 0.3.0
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  contact:
+    name: UEC i4s
+    url: http://i4s.uec.ac.jp
+servers:
+  - url: http://openapi.i4s.uec.ac.jp/api
+    description: Production server via API Gateway
+  - url: http://192.168.12.60:8889
+    description: Development server
+security:
+  - bearerAuth: []
+tags:
+  - name: co2
+    description: CO2 sensor data operations
+  - name: temperature
+    description: Temperature sensor data operations
+  - name: humidity
+    description: Humidity sensor data operations
+  - name: pressure
+    description: Pressure sensor data operations
+  - name: light
+    description: Light sensor data operations
+  - name: sound
+    description: Sound sensor data operations
+  - name: discomfort-index
+    description: Discomfort index sensor data operations
+  - name: heatstroke
+    description: Heatstroke index sensor data operations
+  - name: etvoc
+    description: eTVOC sensor data operations
+  - name: human-detection
+    description: Human detection sensor data operations
+  - name: num-of-people
+    description: Number of people detection sensor data operations
+paths:
+  /v1/co2:
+    get:
+      tags:
+        - co2
+      security:
+        - bearerAuth: []
+      summary: 期間・間隔を指定してCO2の時系列データを取得する。
+      operationId: getCO2Data
+      parameters:
+        - $ref: '#/components/parameters/co2Ulid'
+        - $ref: '#/components/parameters/dataInterval'
+        - $ref: '#/components/parameters/startDateTime'
+        - $ref: '#/components/parameters/endDateTime'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CO2Response'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '410':
+          $ref: '#/components/responses/Gone'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /v1/co2/latest:
+    get:
+      tags:
+        - co2
+      security:
+        - bearerAuth: []
+      summary: 最新のCO2データを取得する
+      operationId: getLatestCO2Data
+      parameters:
+        - $ref: '#/components/parameters/co2Ulid'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CO2Response'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '410':
+          $ref: '#/components/responses/Gone'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /v1/discomfort-index:
+    get:
+      tags:
+        - discomfort-index
+      security:
+        - bearerAuth: []
+      summary: 期間・間隔を指定して不快指数の時系列データを取得する。
+      operationId: getDiscomfortIndexData
+      parameters:
+        - $ref: '#/components/parameters/discomfortIndexUlid'
+        - $ref: '#/components/parameters/dataInterval'
+        - $ref: '#/components/parameters/startDateTime'
+        - $ref: '#/components/parameters/endDateTime'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiscomfortIndexResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '410':
+          $ref: '#/components/responses/Gone'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /v1/discomfort-index/latest:
+    get:
+      tags:
+        - discomfort-index
+      security:
+        - bearerAuth: []
+      summary: 最新の不快指数データを取得する
+      operationId: getLatestDiscomfortIndexData
+      parameters:
+        - $ref: '#/components/parameters/discomfortIndexUlid'
+      responses:
+        '200':
+          description: 成功レスポンス
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiscomfortIndexResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '410':
+          $ref: '#/components/responses/Gone'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /v1/etvoc:
+    get:
+      tags:
+        - etvoc
+      security:
+        - bearerAuth: []
+      summary: 期間・間隔を指定してeTVOCの時系列データを取得する。
+      operationId: getEtvocData
+      parameters:
+        - $ref: '#/components/parameters/etvocUlid'
+        - $ref: '#/components/parameters/dataInterval'
+        - $ref: '#/components/parameters/startDateTime'
+        - $ref: '#/components/parameters/endDateTime'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ETVOCResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '410':
+          $ref: '#/components/responses/Gone'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /v1/etvoc/latest:
+    get:
+      tags:
+        - etvoc
+      security:
+        - bearerAuth: []
+      summary: 最新のETVOCデータを取得する
+      operationId: getLatestEtvocData
+      parameters:
+        - $ref: '#/components/parameters/etvocUlid'
+      responses:
+        '200':
+          description: 成功レスポンス
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ETVOCResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '410':
+          $ref: '#/components/responses/Gone'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /v1/heatstroke:
+    get:
+      tags:
+        - heatstroke
+      security:
+        - bearerAuth: []
+      summary: 期間・間隔を指定して熱中症指数の時系列データを取得する。
+      operationId: getHeatStrokeData
+      parameters:
+        - $ref: '#/components/parameters/heatstrokeUlid'
+        - $ref: '#/components/parameters/dataInterval'
+        - $ref: '#/components/parameters/startDateTime'
+        - $ref: '#/components/parameters/endDateTime'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HeatstrokeResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '410':
+          $ref: '#/components/responses/Gone'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /v1/heatstroke/latest:
+    get:
+      tags:
+        - heatstroke
+      security:
+        - bearerAuth: []
+      summary: 最新の熱中症データを取得する
+      operationId: getLatestHeatstrokeData
+      parameters:
+        - $ref: '#/components/parameters/heatstrokeUlid'
+      responses:
+        '200':
+          description: 成功レスポンス
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HeatstrokeResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '410':
+          $ref: '#/components/responses/Gone'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /v1/human-detection:
+    get:
+      tags:
+        - human-detection
+      security:
+        - bearerAuth: []
+      summary: 期間・間隔を指定して人感検知の時系列データを取得する。
+      operationId: getHumanDetectionData
+      parameters:
+        - $ref: '#/components/parameters/humanDetectionUlid'
+        - $ref: '#/components/parameters/dataInterval'
+        - $ref: '#/components/parameters/startDateTime'
+        - $ref: '#/components/parameters/endDateTime'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HumanDetectionResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '410':
+          $ref: '#/components/responses/Gone'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /v1/human-detection/latest:
+    get:
+      tags:
+        - human-detection
+      security:
+        - bearerAuth: []
+      summary: 最新の人検知データを取得する
+      operationId: getLatestHumanDetectionData
+      parameters:
+        - $ref: '#/components/parameters/humanDetectionUlid'
+      responses:
+        '200':
+          description: 成功レスポンス
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HumanDetectionResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '410':
+          $ref: '#/components/responses/Gone'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /v1/humidity:
+    get:
+      tags:
+        - humidity
+      security:
+        - bearerAuth: []
+      summary: 期間・間隔を指定して湿度の時系列データを取得する
+      operationId: getHumidityData
+      parameters:
+        - $ref: '#/components/parameters/humidityUlid'
+        - $ref: '#/components/parameters/dataInterval'
+        - $ref: '#/components/parameters/startDateTime'
+        - $ref: '#/components/parameters/endDateTime'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HumidityResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '410':
+          $ref: '#/components/responses/Gone'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /v1/humidity/latest:
+    get:
+      tags:
+        - humidity
+      security:
+        - bearerAuth: []
+      summary: 最新の湿度データを取得する
+      operationId: getLatestHumidityData
+      parameters:
+        - $ref: '#/components/parameters/humidityUlid'
+      responses:
+        '200':
+          description: 成功レスポンス
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HumidityResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '410':
+          $ref: '#/components/responses/Gone'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /v1/light:
+    get:
+      tags:
+        - light
+      security:
+        - bearerAuth: []
+      summary: 期間・間隔を指定して照度の時系列データを取得する。
+      operationId: getLightData
+      parameters:
+        - $ref: '#/components/parameters/lightUlid'
+        - $ref: '#/components/parameters/dataInterval'
+        - $ref: '#/components/parameters/startDateTime'
+        - $ref: '#/components/parameters/endDateTime'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LightResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '410':
+          $ref: '#/components/responses/Gone'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /v1/light/latest:
+    get:
+      tags:
+        - light
+      security:
+        - bearerAuth: []
+      summary: 最新の照度データを取得する
+      operationId: getLatestLightData
+      parameters:
+        - $ref: '#/components/parameters/lightUlid'
+      responses:
+        '200':
+          description: 成功レスポンス
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LightResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '410':
+          $ref: '#/components/responses/Gone'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /v1/num-of-people:
+    get:
+      tags:
+        - num-of-people
+      security:
+        - bearerAuth: []
+      summary: 期間・間隔を指定して人数計測の時系列データを取得する。
+      operationId: getNumOfPeopleData
+      parameters:
+        - $ref: '#/components/parameters/numOfPeopleUlid'
+        - $ref: '#/components/parameters/dataInterval'
+        - $ref: '#/components/parameters/startDateTime'
+        - $ref: '#/components/parameters/endDateTime'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NumOfPeopleResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '410':
+          $ref: '#/components/responses/Gone'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /v1/num-of-people/latest:
+    get:
+      tags:
+        - num-of-people
+      security:
+        - bearerAuth: []
+      summary: 最新の人数データを取得する
+      operationId: getLatestNumOfPeopleData
+      parameters:
+        - $ref: '#/components/parameters/numOfPeopleUlid'
+      responses:
+        '200':
+          description: 成功レスポンス
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NumOfPeopleResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '410':
+          $ref: '#/components/responses/Gone'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /v1/pressure:
+    get:
+      tags:
+        - pressure
+      security:
+        - bearerAuth: []
+      summary: 期間・間隔を指定して気圧の時系列データを取得する。
+      operationId: getPressureData
+      parameters:
+        - $ref: '#/components/parameters/pressureUlid'
+        - $ref: '#/components/parameters/dataInterval'
+        - $ref: '#/components/parameters/startDateTime'
+        - $ref: '#/components/parameters/endDateTime'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PressureResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '410':
+          $ref: '#/components/responses/Gone'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /v1/pressure/latest:
+    get:
+      tags:
+        - pressure
+      security:
+        - bearerAuth: []
+      summary: 最新の気圧データを取得する
+      operationId: getLatestPressureData
+      parameters:
+        - $ref: '#/components/parameters/pressureUlid'
+      responses:
+        '200':
+          description: 成功レスポンス
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PressureResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '410':
+          $ref: '#/components/responses/Gone'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /v1/sound:
+    get:
+      tags:
+        - sound
+      security:
+        - bearerAuth: []
+      summary: 期間・間隔を指定して音圧レベルの時系列データを取得する。
+      operationId: getSoundData
+      parameters:
+        - $ref: '#/components/parameters/soundUlid'
+        - $ref: '#/components/parameters/dataInterval'
+        - $ref: '#/components/parameters/startDateTime'
+        - $ref: '#/components/parameters/endDateTime'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SoundResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '410':
+          $ref: '#/components/responses/Gone'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /v1/sound/latest:
+    get:
+      tags:
+        - sound
+      security:
+        - bearerAuth: []
+      summary: 最新の音圧レベルデータを取得する
+      operationId: getLatestSoundData
+      parameters:
+        - $ref: '#/components/parameters/soundUlid'
+      responses:
+        '200':
+          description: 成功レスポンス
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SoundResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '410':
+          $ref: '#/components/responses/Gone'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /v1/temperature:
+    get:
+      tags:
+        - temperature
+      security:
+        - bearerAuth: []
+      summary: 期間・間隔を指定して温度の時系列データを取得する。
+      operationId: getTemperatureData
+      parameters:
+        - $ref: '#/components/parameters/temperatureUlid'
+        - $ref: '#/components/parameters/dataInterval'
+        - $ref: '#/components/parameters/startDateTime'
+        - $ref: '#/components/parameters/endDateTime'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemperatureResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '410':
+          $ref: '#/components/responses/Gone'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /v1/temperature/latest:
+    get:
+      tags:
+        - temperature
+      security:
+        - bearerAuth: []
+      summary: 最新の温度データを取得する
+      operationId: getLatestTemperatureData
+      parameters:
+        - $ref: '#/components/parameters/temperatureUlid'
+      responses:
+        '200':
+          description: 成功レスポンス
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemperatureResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '410':
+          $ref: '#/components/responses/Gone'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Bearer token authentication
+  parameters:
+    co2Ulid:
+      in: query
+      name: ulid
+      required: true
+      schema:
+        type: string
+        example: 01J9K731SX5KPGR1VMZNYM8HXA
+      description: CO2センサーのULID識別子
+    dataInterval:
+      in: query
+      name: interval
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 86400
+        example: 180
+      description: データ取得間隔（秒）
+    startDateTime:
+      in: query
+      name: since
+      required: true
+      schema:
+        type: string
+        format: date-time
+        example: '2024-11-01 12:00:00'
+      description: '取得するデータの開始期間（JST、形式: yyyy-MM-dd HH:mm:ss）'
+    endDateTime:
+      in: query
+      name: until
+      required: true
+      schema:
+        type: string
+        format: date-time
+        example: '2024-11-01 15:00:00'
+      description: '取得するデータの終了期間（JST、形式: yyyy-MM-dd HH:mm:ss）'
+    discomfortIndexUlid:
+      in: query
+      name: ulid
+      required: true
+      schema:
+        type: string
+        example: 01J9K72YH498QKTRCHVRKBE53H
+      description: 不快指数センサーのULID識別子
+    etvocUlid:
+      in: query
+      name: ulid
+      required: true
+      schema:
+        type: string
+        example: 01J9K72Z0C37HXF9F86R0DYM4E
+      description: ETVOCセンサーのULID識別子
+    heatstrokeUlid:
+      in: query
+      name: ulid
+      required: true
+      schema:
+        type: string
+        example: 01J9K730WK6GB3HZ12NS3MD4D2
+      description: 熱中症センサーのULID識別子
+    humanDetectionUlid:
+      in: query
+      name: ulid
+      required: true
+      schema:
+        type: string
+        example: 01J9K72Y8Q479W1JMRF3KNVFMV
+      description: 人検知センサーのULID識別子
+    humidityUlid:
+      in: query
+      name: ulid
+      required: true
+      schema:
+        type: string
+        example: 01J9K730CN88T3SSH8QKVE4FT9
+      description: 湿度センサーのULID識別子
+    lightUlid:
+      in: query
+      name: ulid
+      required: true
+      schema:
+        type: string
+        example: 01J9K730ZZ06JXE4JC2VZMJGDK
+      description: 照度センサーのULID識別子
+    numOfPeopleUlid:
+      in: query
+      name: ulid
+      required: true
+      schema:
+        type: string
+        example: 01J9K730RSJNAKNAG2PP3BQHDK
+      description: 人数カウントセンサーのULID識別子
+    pressureUlid:
+      in: query
+      name: ulid
+      required: true
+      schema:
+        type: string
+        example: 01J9K7303GCBDRDY2N03NY75GJ
+      description: 気圧センサーのULID識別子
+    soundUlid:
+      in: query
+      name: ulid
+      required: true
+      schema:
+        type: string
+        example: 01J9K7308T878MARC64Q84VSSF
+      description: 音圧レベルセンサーのULID識別子
+    temperatureUlid:
+      in: query
+      name: ulid
+      required: true
+      schema:
+        type: string
+        example: 01J9K72YCJH6R0YG1S271XFYN6
+      description: 温度センサーのULID識別子
+  schemas:
+    ResponseInfo:
+      type: object
+      required:
+        - elapsedTime
+        - dataLength
+      properties:
+        elapsedTime:
+          type: integer
+          format: int32
+          minimum: 0
+          description: API内部処理時間（ミリ秒）
+          example: 25
+        dataLength:
+          type: integer
+          format: int32
+          minimum: 0
+          description: データ配列の要素数
+          example: 1
+    SensorResponse:
+      type: object
+      required:
+        - info
+        - data
+      properties:
+        info:
+          $ref: '#/components/schemas/ResponseInfo'
+        data:
+          type: array
+          description: センサーデータの配列
+          items:
+            type: object
+    BaseDataItem:
+      type: object
+      required:
+        - date
+      properties:
+        date:
+          type: string
+          format: date-time
+          description: データ取得日時（JST、ISO 8601形式）
+          example: '2024-12-05T18:37:38+09:00'
+    CO2DataItem:
+      allOf:
+        - $ref: '#/components/schemas/BaseDataItem'
+        - type: object
+          required:
+            - co2
+          properties:
+            co2:
+              type: number
+              format: float
+              minimum: 0
+              maximum: 10000
+              description: CO2濃度（ppm）
+              example: 440.2
+    CO2Response:
+      allOf:
+        - $ref: '#/components/schemas/SensorResponse'
+        - type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/CO2DataItem'
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - message
+      properties:
+        error:
+          type: string
+          example: INVALID_REQUEST
+        message:
+          type: string
+          example: The request parameters are invalid
+        details:
+          type: object
+          additionalProperties: true
+    DiscomfortIndexDataItem:
+      allOf:
+        - $ref: '#/components/schemas/BaseDataItem'
+        - type: object
+          required:
+            - discomfortIndex
+          properties:
+            discomfortIndex:
+              type: number
+              format: float
+              minimum: 0
+              maximum: 100
+              description: 不快指数
+              example: 65.5
+    DiscomfortIndexResponse:
+      allOf:
+        - $ref: '#/components/schemas/SensorResponse'
+        - type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/DiscomfortIndexDataItem'
+    ETVOCDataItem:
+      allOf:
+        - $ref: '#/components/schemas/BaseDataItem'
+        - type: object
+          required:
+            - etvoc
+          properties:
+            etvoc:
+              type: number
+              format: float
+              minimum: 0
+              maximum: 60000
+              description: eTVOC濃度（ppb）
+              example: 125
+    ETVOCResponse:
+      allOf:
+        - $ref: '#/components/schemas/SensorResponse'
+        - type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/ETVOCDataItem'
+    HeatstrokeDataItem:
+      allOf:
+        - $ref: '#/components/schemas/BaseDataItem'
+        - type: object
+          required:
+            - heatstrokeIndex
+          properties:
+            heatstrokeIndex:
+              type: number
+              format: float
+              minimum: 0
+              maximum: 50
+              description: 熱中症指数（WBGT）
+              example: 21.5
+    HeatstrokeResponse:
+      allOf:
+        - $ref: '#/components/schemas/SensorResponse'
+        - type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/HeatstrokeDataItem'
+    HumanDetectionDataItem:
+      allOf:
+        - $ref: '#/components/schemas/BaseDataItem'
+        - type: object
+          required:
+            - detected
+          properties:
+            detected:
+              type: boolean
+              description: 人検出状態
+              example: true
+    HumanDetectionResponse:
+      allOf:
+        - $ref: '#/components/schemas/SensorResponse'
+        - type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/HumanDetectionDataItem'
+    HumidityDataItem:
+      allOf:
+        - $ref: '#/components/schemas/BaseDataItem'
+        - type: object
+          required:
+            - humidity
+          properties:
+            humidity:
+              type: number
+              format: float
+              minimum: 0
+              maximum: 100
+              description: 相対湿度（%RH）
+              example: 55
+    HumidityResponse:
+      allOf:
+        - $ref: '#/components/schemas/SensorResponse'
+        - type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/HumidityDataItem'
+    LightDataItem:
+      allOf:
+        - $ref: '#/components/schemas/BaseDataItem'
+        - type: object
+          required:
+            - light
+          properties:
+            light:
+              type: number
+              format: float
+              minimum: 0
+              maximum: 100000
+              description: 照度（lx）
+              example: 300
+    LightResponse:
+      allOf:
+        - $ref: '#/components/schemas/SensorResponse'
+        - type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/LightDataItem'
+    NumOfPeopleDataItem:
+      allOf:
+        - $ref: '#/components/schemas/BaseDataItem'
+        - type: object
+          required:
+            - numOfPeople
+          properties:
+            numOfPeople:
+              type: integer
+              minimum: 0
+              maximum: 1000
+              description: 検出人数
+              example: 5
+    NumOfPeopleResponse:
+      allOf:
+        - $ref: '#/components/schemas/SensorResponse'
+        - type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/NumOfPeopleDataItem'
+    PressureDataItem:
+      allOf:
+        - $ref: '#/components/schemas/BaseDataItem'
+        - type: object
+          required:
+            - pressure
+          properties:
+            pressure:
+              type: number
+              format: float
+              minimum: 300
+              maximum: 1100
+              description: 大気圧（hPa）
+              example: 1013.25
+    PressureResponse:
+      allOf:
+        - $ref: '#/components/schemas/SensorResponse'
+        - type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/PressureDataItem'
+    SoundDataItem:
+      allOf:
+        - $ref: '#/components/schemas/BaseDataItem'
+        - type: object
+          required:
+            - sound
+          properties:
+            sound:
+              type: number
+              format: float
+              minimum: 0
+              maximum: 200
+              description: 音圧レベル（dB）
+              example: 45.2
+    SoundResponse:
+      allOf:
+        - $ref: '#/components/schemas/SensorResponse'
+        - type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/SoundDataItem'
+    TemperatureDataItem:
+      allOf:
+        - $ref: '#/components/schemas/BaseDataItem'
+        - type: object
+          required:
+            - temperature
+          properties:
+            temperature:
+              type: number
+              format: float
+              minimum: -50
+              maximum: 100
+              description: 温度（℃）
+              example: 23.5
+    TemperatureResponse:
+      allOf:
+        - $ref: '#/components/schemas/SensorResponse'
+        - type: object
+          properties:
+            data:
+              type: array
+              items:
+                $ref: '#/components/schemas/TemperatureDataItem'
+  responses:
+    Unauthorized:
+      description: Unauthorized - 認証が必要です
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: UNAUTHORIZED
+            message: 有効な認証トークンが必要です
+    Gone:
+      description: Gone - リソースが利用できなくなりました
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: GONE
+            message: 指定されたリソースはすでに削除されています
+    InternalServerError:
+      description: Internal Server Error - サーバー内部エラー
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: INTERNAL_SERVER_ERROR
+            message: サーバー内部でエラーが発生しました
