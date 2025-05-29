@@ -6,27 +6,21 @@ get:
   summary: 空調の状態を取得する
   operationId: getAirconStatus
   parameters:
-    - $ref: ../components/parameters/index.yaml#/ulid
+    - name: ulid
+      in: query
+      required: true
+      schema:
+        $ref: ../components/schemas/aircon.yaml#/AirconUlid
   responses:
     "200":
       description: Successful response
       content:
         application/json:
           schema:
-            type: object
-            required:
-              - temp_sv
-              - mode
-            properties:
-              temp_sv:
-                $ref: ../components/schemas/aircon.yaml#/AirconTemperature
-              mode:
-                $ref: ../components/schemas/aircon.yaml#/AirconMode
-    "400":
-      $ref: ../../common/responses/4xx.yaml#/BadRequest
+            $ref: ../components/schemas/aircon.yaml#/AirconStatus
     "401":
-      $ref: ../../common/responses/4xx.yaml#/Unauthorized
-    "404":
-      $ref: ../../common/responses/4xx.yaml#/NotFound
-    "500":
-      $ref: ../../common/responses/5xx.yaml#/InternalServerError
+      $ref: ../../common/v1/responses/4xx.yaml#/Unauthorized
+    "410":
+      $ref: ../../common/v1/responses/4xx.yaml#/Gone
+    "502":
+      $ref: ../../common/v1/responses/5xx.yaml#/BadGateway

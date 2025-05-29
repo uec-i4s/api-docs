@@ -1,0 +1,19 @@
+Unauthorized:
+  description: Unauthorized - 認証が必要です
+  content:
+    application/json:
+      schema:
+        $ref: ../schemas/response.yaml#/ErrorResponse
+      example:
+        error: UNAUTHORIZED
+        message: 有効な認証トークンが必要です
+
+Gone:
+  description: Gone - リソースが利用できなくなりました
+  content:
+    application/json:
+      schema:
+        $ref: ../schemas/response.yaml#/ErrorResponse
+      example:
+        error: GONE
+        message: 指定されたリソースはすでに削除されています

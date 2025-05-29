@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: UEC Library AIA API
   description: AIA (Air conditioning, Illumination, Air quality) control API for UEC Library
-  version: 0.3.0
+  version: 0.2.0
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
@@ -24,7 +24,7 @@ tags:
   - name: ventilator
     description: Ventilator control operations
 paths:
-  /v1/aia/aircon:
+  /v1/AIA/aircon:
     get:
       tags:
         - aircon
@@ -33,41 +33,34 @@ paths:
       summary: 空調の状態を取得する
       operationId: getAirconStatus
       parameters:
-        - $ref: '#/components/parameters/ulid'
+        - name: ulid
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/AirconUlid'
       responses:
         '200':
           description: Successful response
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - temp_sv
-                  - mode
-                properties:
-                  temp_sv:
-                    $ref: '#/components/schemas/AirconTemperature'
-                  mode:
-                    $ref: '#/components/schemas/AirconMode'
-        '400':
-          $ref: '#/components/responses/BadRequest'
+                $ref: '#/components/schemas/AirconStatus'
         '401':
           $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-  /v1/aia/aircon/mode:
+        '410':
+          $ref: '#/components/responses/Gone'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+  /v1/AIA/aircon/mode:
     put:
       tags:
         - aircon
       security:
         - bearerAuth: []
-      summary: 空調のモードを更新する
-      description: '運転モードを設定します。0: 運転停止  1: 冷房  2: 暖房  3: 送風'
+      summary: 空調の設定を更新する（モード）
+      description: 'mode=0: 運転停止、1: 冷房、2:暖房、3:送風'
       operationId: updateAirconMode
       requestBody:
-        description: 空調のモードを更新するリクエスト
         required: true
         content:
           application/json:
@@ -78,7 +71,7 @@ paths:
                 - mode
               properties:
                 ulid:
-                  $ref: '#/components/schemas/Ulid'
+                  $ref: '#/components/schemas/AirconUlid'
                 mode:
                   $ref: '#/components/schemas/AirconMode'
       responses:
@@ -87,26 +80,26 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OperationResult'
-        '400':
-          $ref: '#/components/responses/BadRequest'
+                type: object
+                properties:
+                  message:
+                    type: string
         '401':
           $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-  /v1/aia/aircon/temp:
+        '410':
+          $ref: '#/components/responses/Gone'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+  /v1/AIA/aircon/temp:
     put:
       tags:
         - aircon
       security:
         - bearerAuth: []
       summary: 空調の設定温度を更新する
-      description: 設定温度を変更します。18~28℃の範囲で指定してください
+      description: 18~28℃の範囲で指定
       operationId: updateAirconTemperature
       requestBody:
-        description: 空調の設定温度を更新するリクエスト
         required: true
         content:
           application/json:
@@ -117,7 +110,7 @@ paths:
                 - temp_sv
               properties:
                 ulid:
-                  $ref: '#/components/schemas/Ulid'
+                  $ref: '#/components/schemas/AirconUlid'
                 temp_sv:
                   $ref: '#/components/schemas/AirconTemperature'
       responses:
@@ -126,16 +119,17 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OperationResult'
-        '400':
-          $ref: '#/components/responses/BadRequest'
+                type: object
+                properties:
+                  message:
+                    type: string
         '401':
           $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-  /v1/aia/light:
+        '410':
+          $ref: '#/components/responses/Gone'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+  /v1/AIA/light:
     get:
       tags:
         - light
@@ -144,7 +138,11 @@ paths:
       summary: 照明の状態を取得する
       operationId: getLightStatus
       parameters:
-        - $ref: '#/components/parameters/ulid'
+        - name: ulid
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/LightUlid'
       responses:
         '200':
           description: Successful response
@@ -152,24 +150,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/LightStatus'
-        '400':
-          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+        '410':
+          $ref: '#/components/responses/Gone'
+        '502':
+          $ref: '#/components/responses/BadGateway'
     put:
       tags:
         - light
       security:
         - bearerAuth: []
-      summary: 照明のシーンを設定する
-      description: 照明のシーン状態を設定します。各シーンについては別途参照してください。
+      summary: 照明のシーンを設定する 各シーンについては別途参照。
       operationId: updateLightScene
       requestBody:
-        description: 照明のシーンを設定するリクエスト
         required: true
         content:
           application/json:
@@ -180,25 +174,19 @@ paths:
                 - scene
               properties:
                 ulid:
-                  $ref: '#/components/schemas/Ulid'
+                  $ref: '#/components/schemas/LightUlid'
                 scene:
                   $ref: '#/components/schemas/LightScene'
       responses:
         '200':
           description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LightStatus'
-        '400':
-          $ref: '#/components/responses/BadRequest'
         '401':
           $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
-  /v1/aia/ventilator:
+        '410':
+          $ref: '#/components/responses/Gone'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+  /v1/AIA/Ventilator:
     get:
       tags:
         - ventilator
@@ -207,32 +195,32 @@ paths:
       summary: ベンチレーターの状態を取得する
       operationId: getVentilatorStatus
       parameters:
-        - $ref: '#/components/parameters/ulid'
+        - name: ulid
+          in: query
+          required: true
+          schema:
+            $ref: '#/components/schemas/VentilatorUlid'
       responses:
         '200':
           description: Successful response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VentilatorStatus'
-        '400':
-          $ref: '#/components/responses/BadRequest'
+                type: string
         '401':
           $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+        '410':
+          $ref: '#/components/responses/Gone'
+        '502':
+          $ref: '#/components/responses/BadGateway'
     put:
       tags:
         - ventilator
       security:
         - bearerAuth: []
-      summary: ベンチレーターの開度を設定する
-      description: ベンチレーターの開度を0から100%で指定します
+      summary: ベンチレータの開度を0から100%で指定する
       operationId: updateVentilatorOpening
       requestBody:
-        description: ベンチレーターの開度を設定するリクエスト
         required: true
         content:
           application/json:
@@ -243,24 +231,22 @@ paths:
                 - percent
               properties:
                 ulid:
-                  $ref: '#/components/schemas/Ulid'
+                  $ref: '#/components/schemas/VentilatorUlid'
                 percent:
                   $ref: '#/components/schemas/VentilatorPercent'
       responses:
         '200':
-          description: Successful response
+          description: Successful responseVentilatorPercent
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/VentilatorStatus'
-        '400':
-          $ref: '#/components/responses/BadRequest'
+                type: string
         '401':
           $ref: '#/components/responses/Unauthorized'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+        '410':
+          $ref: '#/components/responses/Gone'
+        '502':
+          $ref: '#/components/responses/BadGateway'
 components:
   securitySchemes:
     bearerAuth:
@@ -269,11 +255,10 @@ components:
       bearerFormat: JWT
       description: Bearer token authentication
   schemas:
-    Ulid:
+    AirconUlid:
       type: string
-      pattern: ^[0123456789ABCDEFGHJKMNPQRSTVWXYZ]{26}$
-      example: 01JBGZV7QA7KTP1Q9E159Q3EFT
-      description: 機器をULIDの形式で指定します
+      example: 01JBGZV7E89TBDXS6Z8HE3A2J6
+      description: 空調機器をULIDの形式で指定する。詳細は別途参照
     AirconTemperature:
       type: number
       format: float
@@ -283,10 +268,18 @@ components:
       description: 設定温度（℃）
     AirconMode:
       type: integer
-      minimum: 0
-      maximum: 3
       example: 2
-      description: '運転モード: 0=運転停止, 1=冷房, 2=暖房, 3=送風'
+      description: 運転モードを数値で指定する。詳細は別途参照
+    AirconStatus:
+      type: object
+      required:
+        - temp_sv
+        - mode
+      properties:
+        temp_sv:
+          $ref: '#/components/schemas/AirconTemperature'
+        mode:
+          $ref: '#/components/schemas/AirconMode'
     ErrorResponse:
       type: object
       required:
@@ -302,27 +295,16 @@ components:
         details:
           type: object
           additionalProperties: true
-    OperationResult:
-      type: object
-      required:
-        - result
-        - message
-      properties:
-        result:
-          type: string
-          enum:
-            - ok
-            - error
-          example: ok
-        message:
-          type: string
-          example: Request was correctly received by central system.
+    LightUlid:
+      type: string
+      example: 01JBGZV74JHG440RVECVT8TMAA
+      description: 照明機器をULIDで指定する。詳細は別途参照。
     LightScene:
       type: integer
       minimum: 1
       maximum: 10
       example: 2
-      description: シーンを数値で指定します。詳細は別途参照してください
+      description: シーンを数値で指定する。詳細は別途参照してください
     LightStatus:
       type: object
       required:
@@ -330,37 +312,17 @@ components:
       properties:
         scene:
           $ref: '#/components/schemas/LightScene'
+    VentilatorUlid:
+      type: string
+      example: 01JBGZV7QA7KTP1Q9E159Q3EFT
+      description: ベンチレーターをULIDで指定する。詳細は別途参照。
     VentilatorPercent:
       type: integer
+      example: 50
       minimum: 0
       maximum: 100
-      example: 50
-      description: 開度を0~100%で指定します
-    VentilatorStatus:
-      type: object
-      required:
-        - percent
-      properties:
-        percent:
-          $ref: '#/components/schemas/VentilatorPercent'
-  parameters:
-    ulid:
-      name: ulid
-      in: query
-      required: true
-      description: 機器をULIDの形式で指定します
-      schema:
-        $ref: '#/components/schemas/Ulid'
+      description: VAV開度を0~100%で指定する
   responses:
-    BadRequest:
-      description: Bad Request - 不正なリクエスト
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-          example:
-            error: INVALID_REQUEST
-            message: リクエストパラメータが不正です
     Unauthorized:
       description: Unauthorized - 認証が必要です
       content:
@@ -370,21 +332,21 @@ components:
           example:
             error: UNAUTHORIZED
             message: 有効な認証トークンが必要です
-    NotFound:
-      description: Not Found - 指定されたリソースが見つかりません
+    Gone:
+      description: Gone - リソースが利用できなくなりました
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
           example:
-            error: NOT_FOUND
-            message: 指定されたULIDの機器が見つかりません
-    InternalServerError:
-      description: Internal Server Error - サーバー内部エラー
+            error: GONE
+            message: 指定されたリソースはすでに削除されています
+    BadGateway:
+      description: Bad Gateway - 上流サーバーから不正な応答
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
           example:
-            error: INTERNAL_ERROR
-            message: サーバー内部でエラーが発生しました
+            error: BAD_GATEWAY
+            message: 上流サーバーから不正な応答がありました

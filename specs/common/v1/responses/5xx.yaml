@@ -1,0 +1,9 @@
+BadGateway:
+  description: Bad Gateway - 上流サーバーから不正な応答
+  content:
+    application/json:
+      schema:
+        $ref: ../schemas/response.yaml#/ErrorResponse
+      example:
+        error: BAD_GATEWAY
+        message: 上流サーバーから不正な応答がありました

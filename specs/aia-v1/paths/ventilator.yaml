@@ -6,33 +6,33 @@ get:
   summary: ベンチレーターの状態を取得する
   operationId: getVentilatorStatus
   parameters:
-    - $ref: ../components/parameters/index.yaml#/ulid
+    - name: ulid
+      in: query
+      required: true
+      schema:
+        $ref: ../components/schemas/ventilator.yaml#/VentilatorUlid
   responses:
     "200":
       description: Successful response
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/ventilator.yaml#/VentilatorStatus
-    "400":
-      $ref: ../../common/responses/4xx.yaml#/BadRequest
+            type: string
     "401":
-      $ref: ../../common/responses/4xx.yaml#/Unauthorized
-    "404":
-      $ref: ../../common/responses/4xx.yaml#/NotFound
-    "500":
-      $ref: ../../common/responses/5xx.yaml#/InternalServerError
+      $ref: ../../common/v1/responses/4xx.yaml#/Unauthorized
+    "410":
+      $ref: ../../common/v1/responses/4xx.yaml#/Gone
+    "502":
+      $ref: ../../common/v1/responses/5xx.yaml#/BadGateway
 
 put:
   tags:
     - ventilator
   security:
     - bearerAuth: []
-  summary: ベンチレーターの開度を設定する
-  description: ベンチレーターの開度を0から100%で指定します
+  summary: ベンチレータの開度を0から100%で指定する
   operationId: updateVentilatorOpening
   requestBody:
-    description: ベンチレーターの開度を設定するリクエスト
     required: true
     content:
       application/json:
@@ -43,21 +43,19 @@ put:
             - percent
           properties:
             ulid:
-              $ref: ../components/schemas/index.yaml#/Ulid
+              $ref: ../components/schemas/ventilator.yaml#/VentilatorUlid
             percent:
               $ref: ../components/schemas/ventilator.yaml#/VentilatorPercent
   responses:
     "200":
-      description: Successful response
+      description: Successful responseVentilatorPercent
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/ventilator.yaml#/VentilatorStatus
-    "400":
-      $ref: ../../common/responses/4xx.yaml#/BadRequest
+            type: "string"
     "401":
-      $ref: ../../common/responses/4xx.yaml#/Unauthorized
-    "404":
-      $ref: ../../common/responses/4xx.yaml#/NotFound
-    "500":
-      $ref: ../../common/responses/5xx.yaml#/InternalServerError
+      $ref: ../../common/v1/responses/4xx.yaml#/Unauthorized
+    "410":
+      $ref: ../../common/v1/responses/4xx.yaml#/Gone
+    "502":
+      $ref: ../../common/v1/responses/5xx.yaml#/BadGateway

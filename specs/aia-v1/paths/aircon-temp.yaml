@@ -4,10 +4,9 @@ put:
   security:
     - bearerAuth: []
   summary: 空調の設定温度を更新する
-  description: 設定温度を変更します。18~28℃の範囲で指定してください
+  description: 18~28℃の範囲で指定
   operationId: updateAirconTemperature
   requestBody:
-    description: 空調の設定温度を更新するリクエスト
     required: true
     content:
       application/json:
@@ -18,7 +17,7 @@ put:
             - temp_sv
           properties:
             ulid:
-              $ref: ../components/schemas/index.yaml#/Ulid
+              $ref: ../components/schemas/aircon.yaml#/AirconUlid
             temp_sv:
               $ref: ../components/schemas/aircon.yaml#/AirconTemperature
   responses:
@@ -27,12 +26,13 @@ put:
       content:
         application/json:
           schema:
-            $ref: ../components/schemas/index.yaml#/OperationResult
-    "400":
-      $ref: ../../common/responses/4xx.yaml#/BadRequest
+            type: "object"
+            properties:
+              message:
+                type: "string"
     "401":
-      $ref: ../../common/responses/4xx.yaml#/Unauthorized
-    "404":
-      $ref: ../../common/responses/4xx.yaml#/NotFound
-    "500":
-      $ref: ../../common/responses/5xx.yaml#/InternalServerError
+      $ref: ../../common/v1/responses/4xx.yaml#/Unauthorized
+    "410":
+      $ref: ../../common/v1/responses/4xx.yaml#/Gone
+    "502":
+      $ref: ../../common/v1/responses/5xx.yaml#/BadGateway

@@ -18,16 +18,24 @@ servers:
 security:
   - bearerAuth: []
 
+tags:
+  - name: aircon
+    description: Air conditioning control operations
+  - name: light
+    description: Lighting control operations
+  - name: ventilator
+    description: Ventilator control operations
+
 paths:
-  /v1/aia/aircon:
+  /v1/AIA/aircon:
     $ref: ./paths/aircon.yaml
-  /v1/aia/aircon/mode:
+  /v1/AIA/aircon/mode:
     $ref: ./paths/aircon-mode.yaml
-  /v1/aia/aircon/temp:
+  /v1/AIA/aircon/temp:
     $ref: ./paths/aircon-temp.yaml
-  /v1/aia/light:
+  /v1/AIA/light:
     $ref: ./paths/light.yaml
-  /v1/aia/ventilator:
+  /v1/AIA/Ventilator:
     $ref: ./paths/ventilator.yaml
 
 components:
@@ -37,11 +45,3 @@ components:
       scheme: bearer
       bearerFormat: JWT
       description: Bearer token authentication
-
-tags:
-  - name: aircon
-    description: Air conditioning control operations
-  - name: light
-    description: Lighting control operations
-  - name: ventilator
-    description: Ventilator control operations

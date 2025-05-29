@@ -1,9 +1,0 @@
-InternalServerError:
-  description: Internal Server Error - サーバー内部エラー
-  content:
-    application/json:
-      schema:
-        $ref: ../schemas/response.yaml#/ErrorResponse
-      example:
-        error: INTERNAL_ERROR
-        message: サーバー内部でエラーが発生しました
