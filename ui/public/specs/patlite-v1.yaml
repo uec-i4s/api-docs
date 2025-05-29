@@ -1,0 +1,243 @@
+openapi: 3.0.3
+info:
+  title: UEC Patlite API
+  description: UEC Patlite API for controlling Patlite devices
+  version: 0.3.0
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  contact:
+    name: UEC i4s
+    url: http://i4s.uec.ac.jp
+servers:
+  - url: http://openapi.i4s.uec.ac.jp/api
+    description: Development server
+security:
+  - BearerAuth: []
+tags:
+  - name: Patlite
+    description: Patlite control operations
+paths:
+  /v1/w9/Patlite:
+    put:
+      tags:
+        - Patlite
+      summary: Send request to patlite device
+      description: Send request to patlite device
+      operationId: send_patlite_v1_w9_Patlite__put
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: ulid
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/PatliteUlid'
+          description: パトライトをULIDで指定する。
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              title: PatliteRequestParams
+              type: object
+              required:
+                - buzzer
+                - light1
+                - light2
+                - light3
+                - light4
+                - light5
+              properties:
+                buzzer:
+                  type: integer
+                  title: Buzzer
+                  description: ブザーの設定
+                light1:
+                  type: object
+                  allOf:
+                    - $ref: '#/components/schemas/PatliteLight'
+                  nullable: true
+                  description: ライト1の設定
+                light2:
+                  type: object
+                  allOf:
+                    - $ref: '#/components/schemas/PatliteLight'
+                  nullable: true
+                  description: ライト2の設定
+                light3:
+                  type: object
+                  allOf:
+                    - $ref: '#/components/schemas/PatliteLight'
+                  nullable: true
+                  description: ライト3の設定
+                light4:
+                  type: object
+                  allOf:
+                    - $ref: '#/components/schemas/PatliteLight'
+                  nullable: true
+                  description: ライト4の設定
+                light5:
+                  type: object
+                  allOf:
+                    - $ref: '#/components/schemas/PatliteLight'
+                  nullable: true
+                  description: ライト5の設定
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatliteResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /v1/w9/Patlite/clear:
+    put:
+      tags:
+        - Patlite
+      summary: Turn off patlite
+      description: Turn off patlite
+      operationId: clear_patlite_v1_w9_Patlite_clear_put
+      security:
+        - BearerAuth: []
+      parameters:
+        - name: ulid
+          in: query
+          required: false
+          schema:
+            $ref: '#/components/schemas/PatliteUlid'
+          description: パトライトをULIDで指定する。
+      responses:
+        '200':
+          description: Successful Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PatliteResponse'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '422':
+          description: Validation Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: Credentials or access token for API
+      description: Bearer token authentication
+  schemas:
+    PatliteUlid:
+      type: string
+      description: パトライトをULIDで指定する。
+      example: 01JBGZV7VSMW24VSS4BEPV0AEX
+    PatliteLight:
+      type: object
+      required:
+        - color
+        - flash
+      properties:
+        color:
+          type: integer
+          description: ライトの色を指定する数値
+        flash:
+          type: integer
+          description: 点滅パターンを指定する数値
+    PatliteResponse:
+      type: object
+      required:
+        - string
+        - succeed
+      properties:
+        string:
+          type: string
+          description: レスポンスメッセージ
+        succeed:
+          type: boolean
+          description: 操作が成功したかどうか
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - message
+      properties:
+        error:
+          type: string
+          example: INVALID_REQUEST
+        message:
+          type: string
+          example: The request parameters are invalid
+        details:
+          type: object
+          additionalProperties: true
+    ValidationError:
+      type: object
+      properties:
+        detail:
+          type: array
+          items:
+            type: object
+            required:
+              - loc
+              - msg
+              - type
+            properties:
+              loc:
+                type: array
+                items:
+                  anyOf:
+                    - type: string
+                    - type: integer
+                title: Location
+              msg:
+                type: string
+                title: Message
+              type:
+                type: string
+                title: Error Type
+  responses:
+    Unauthorized:
+      description: Unauthorized - 認証が必要です
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: UNAUTHORIZED
+            message: 有効な認証トークンが必要です
+    Forbidden:
+      description: Forbidden - アクセスが禁止されています
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: FORBIDDEN
+            message: このリソースへのアクセス権限がありません
+    InternalServerError:
+      description: Internal Server Error - サーバー内部エラー
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: INTERNAL_SERVER_ERROR
+            message: サーバー内部でエラーが発生しました

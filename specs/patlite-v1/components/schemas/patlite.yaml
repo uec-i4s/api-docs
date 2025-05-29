@@ -1,0 +1,30 @@
+PatliteUlid:
+  type: string
+  description: パトライトをULIDで指定する。
+  example: 01JBGZV7VSMW24VSS4BEPV0AEX
+
+PatliteLight:
+  type: object
+  required:
+    - color
+    - flash
+  properties:
+    color:
+      type: integer
+      description: ライトの色を指定する数値
+    flash:
+      type: integer
+      description: 点滅パターンを指定する数値
+
+PatliteResponse:
+  type: object
+  required:
+    - string
+    - succeed
+  properties:
+    string:
+      type: string
+      description: レスポンスメッセージ
+    succeed:
+      type: boolean
+      description: 操作が成功したかどうか

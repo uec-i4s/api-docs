@@ -8,6 +8,16 @@ Unauthorized:
         error: UNAUTHORIZED
         message: 有効な認証トークンが必要です
 
+Forbidden:
+  description: Forbidden - アクセスが禁止されています
+  content:
+    application/json:
+      schema:
+        $ref: ../schemas/response.yaml#/ErrorResponse
+      example:
+        error: FORBIDDEN
+        message: このリソースへのアクセス権限がありません
+
 Gone:
   description: Gone - リソースが利用できなくなりました
   content:
