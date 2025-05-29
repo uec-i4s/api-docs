@@ -2,7 +2,7 @@ openapi: 3.0.3
 info:
   title: UEC Library AIA API
   description: AIA (Air conditioning, Illumination, Air quality) control API for UEC Library
-  version: 0.2.0
+  version: 0.3.0
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
