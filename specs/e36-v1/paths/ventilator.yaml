@@ -1,0 +1,55 @@
+get:
+  tags:
+    - ventilator
+  security:
+    - bearerAuth: []
+  summary: ベンチレータの状態を取得する
+  operationId: getVentilatorStatus
+  parameters:
+    - name: ulid
+      in: query
+      required: true
+      description: ベンチレータ機器をULIDの形式で指定する。詳細は別途参照
+      schema:
+        $ref: ../components/schemas/ventilator.yaml#/VentilatorUlid
+  responses:
+    "200":
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            type: string
+    "401":
+      $ref: ../../common/v1/responses/4xx.yaml#/Unauthorized
+
+put:
+  tags:
+    - ventilator
+  security:
+    - bearerAuth: []
+  summary: ベンチレータの設定を更新する
+  operationId: updateVentilator
+  requestBody:
+    description: ベンチレータ設定リクエスト
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - ulid
+            - operation
+          properties:
+            ulid:
+              $ref: ../components/schemas/ventilator.yaml#/VentilatorUlid
+            operation:
+              $ref: ../components/schemas/ventilator.yaml#/VentilatorOperation
+  responses:
+    "200":
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            type: string
+    "401":
+      $ref: ../../common/v1/responses/4xx.yaml#/Unauthorized

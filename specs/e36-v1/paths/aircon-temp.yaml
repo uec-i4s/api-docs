@@ -1,0 +1,31 @@
+put:
+  tags:
+    - aircon
+  security:
+    - bearerAuth: []
+  summary: 空調の設定を更新する（温度）
+  operationId: updateAirconTemperature
+  requestBody:
+    description: 空調温度設定リクエスト
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - ulid
+            - temp_num
+          properties:
+            ulid:
+              $ref: ../components/schemas/aircon.yaml#/AirconUlid
+            temp_num:
+              $ref: ../components/schemas/aircon.yaml#/AirconTemperature
+  responses:
+    "200":
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            type: string
+    "401":
+      $ref: ../../common/v1/responses/4xx.yaml#/Unauthorized

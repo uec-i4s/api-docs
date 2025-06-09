@@ -1,0 +1,49 @@
+openapi: 3.0.3
+info:
+  title: UEC East 36 Building Environmental Control API
+  description: Environmental control API for UEC East 36 Building (Air conditioning, Lighting, Ventilation)
+  version: 1.0.0
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  contact:
+    name: UEC i4s
+    url: http://i4s.uec.ac.jp
+servers:
+  - url: http://openapi.i4s.uec.ac.jp/api
+    description: Production server via API Gateway
+  - url: http://openapi.i4s.uec.ac.jp:8889
+    description: Development server
+
+security:
+  - bearerAuth: []
+
+tags:
+  - name: aircon
+    description: Air conditioning control operations
+  - name: light
+    description: Lighting control operations
+  - name: ventilator
+    description: Ventilator control operations
+
+paths:
+  /v1/E36/AirCon:
+    $ref: ./paths/aircon.yaml
+  /v1/E36/AirCon/Mode:
+    $ref: ./paths/aircon-mode.yaml
+  /v1/E36/AirCon/Temp:
+    $ref: ./paths/aircon-temp.yaml
+  /v1/E36/light:
+    $ref: ./paths/light.yaml
+  /v1/E36/ventilator:
+    $ref: ./paths/ventilator.yaml
+  /v1/E36/ventilator/middle-open:
+    $ref: ./paths/ventilator-middle-open.yaml
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Bearer token authentication

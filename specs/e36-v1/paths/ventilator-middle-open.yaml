@@ -1,0 +1,32 @@
+put:
+  tags:
+    - ventilator
+  security:
+    - bearerAuth: []
+  summary: ベンチレータの設定を更新する（開度指定）
+  description: ベンチレータの開度を0~100%で指定する
+  operationId: updateVentilatorMiddleOpen
+  requestBody:
+    description: ベンチレータ開度設定リクエスト
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - ulid
+            - percent
+          properties:
+            ulid:
+              $ref: ../components/schemas/ventilator.yaml#/VentilatorUlid
+            percent:
+              $ref: ../components/schemas/ventilator.yaml#/VentilatorPercent
+  responses:
+    "200":
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            type: string
+    "401":
+      $ref: ../../common/v1/responses/4xx.yaml#/Unauthorized

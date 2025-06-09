@@ -1,0 +1,23 @@
+get:
+  tags:
+    - aircon
+  security:
+    - bearerAuth: []
+  summary: 空調の状態を取得する
+  operationId: getAirconStatus
+  parameters:
+    - name: ulid
+      in: query
+      required: true
+      description: 空調機器をULIDの形式で指定する。詳細は別途参照
+      schema:
+        $ref: ../components/schemas/aircon.yaml#/AirconUlid
+  responses:
+    "200":
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            type: string
+    "401":
+      $ref: ../../common/v1/responses/4xx.yaml#/Unauthorized
