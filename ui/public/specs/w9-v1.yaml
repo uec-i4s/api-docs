@@ -1,0 +1,392 @@
+openapi: 3.0.3
+info:
+  title: West9 Building Automation API
+  description: Building automation control API for West9 building (Air conditioning, Lighting, Ventilation, and Electric Lock control)
+  version: 1.0.0
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  contact:
+    name: UEC i4s
+    url: http://i4s.uec.ac.jp
+servers:
+  - url: http://openapi.i4s.uec.ac.jp/api
+    description: Production server via API Gateway
+  - url: http://openapi.i4s.uec.ac.jp:8889
+    description: Development server
+security:
+  - bearerAuth: []
+tags:
+  - name: aircon
+    description: Air conditioning control operations
+  - name: light
+    description: Lighting control operations
+  - name: ventilator
+    description: Ventilator control operations
+  - name: electric-lock
+    description: Electric lock control operations
+paths:
+  /v1/West9/AirCon:
+    get:
+      tags:
+        - aircon
+      security:
+        - bearerAuth: []
+      summary: 空調の状態を取得する
+      operationId: getAirconStatus
+      parameters:
+        - name: ulid
+          in: query
+          required: true
+          description: 空調機器をULIDの形式で指定する。詳細は別途参照
+          schema:
+            $ref: '#/components/schemas/AirconUlid'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v1/West9/AirCon/Mode:
+    put:
+      tags:
+        - aircon
+      security:
+        - bearerAuth: []
+      summary: 空調の設定を更新する（停止／運転モード）
+      operationId: updateAirconMode
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - ulid
+                - mode
+              properties:
+                ulid:
+                  $ref: '#/components/schemas/AirconUlid'
+                mode:
+                  $ref: '#/components/schemas/AirconMode'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v1/West9/AirCon/Temp:
+    put:
+      tags:
+        - aircon
+      security:
+        - bearerAuth: []
+      summary: 空調の設定を更新する（温度）
+      operationId: updateAirconTemp
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - ulid
+                - temp_num
+              properties:
+                ulid:
+                  $ref: '#/components/schemas/AirconUlid'
+                temp_num:
+                  $ref: '#/components/schemas/AirconTemperature'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v1/W9/light:
+    get:
+      tags:
+        - light
+      security:
+        - bearerAuth: []
+      summary: 照明の状態を取得する
+      operationId: getLightStatus
+      parameters:
+        - name: ulid
+          in: query
+          required: true
+          description: 照明機器をULIDで指定する。詳細は別途参照
+          schema:
+            $ref: '#/components/schemas/LightUlid'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  scene:
+                    $ref: '#/components/schemas/LightScene'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    put:
+      tags:
+        - light
+      security:
+        - bearerAuth: []
+      summary: 照明のシーン状態を設定する。各シーンについては別途参照
+      operationId: updateLightScene
+      requestBody:
+        required: true
+        description: 各ulid、各sceneの指定方法については別途参照
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - ulid
+                - scene
+              properties:
+                ulid:
+                  $ref: '#/components/schemas/LightUlid'
+                scene:
+                  $ref: '#/components/schemas/LightScene'
+      responses:
+        '200':
+          description: Successful response
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v1/W9/Ventilator:
+    get:
+      tags:
+        - ventilator
+      security:
+        - bearerAuth: []
+      summary: ベンチレータの状態を取得する
+      operationId: getVentilatorStatus
+      parameters:
+        - name: ulid
+          in: query
+          required: true
+          description: ベンチレーター機器をULIDの形式で指定する。詳細は別途参照
+          schema:
+            $ref: '#/components/schemas/VentilatorUlid'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    put:
+      tags:
+        - ventilator
+      security:
+        - bearerAuth: []
+      summary: ベンチレータの設定を更新する
+      operationId: updateVentilator
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - ulid
+                - operation
+              properties:
+                ulid:
+                  $ref: '#/components/schemas/VentilatorUlid'
+                operation:
+                  $ref: '#/components/schemas/VentilatorOperation'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v1/W9/Ventilator/MiddleOpen:
+    put:
+      tags:
+        - ventilator
+      security:
+        - bearerAuth: []
+      summary: ベンチレータの設定を更新する（半開）
+      operationId: updateVentilatorMiddleOpen
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - ulid
+                - percent
+              properties:
+                ulid:
+                  $ref: '#/components/schemas/VentilatorUlid'
+                percent:
+                  $ref: '#/components/schemas/VentilatorPercent'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+  /v1/W9/ElectricLock:
+    get:
+      tags:
+        - electric-lock
+      security:
+        - bearerAuth: []
+      summary: 電子錠の状態を取得する
+      operationId: getElectricLockStatus
+      parameters:
+        - name: ulid
+          in: query
+          required: true
+          description: 電子錠をULIDの形式で指定する。詳細は別途参照
+          schema:
+            $ref: '#/components/schemas/ElectricLockUlid'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+    put:
+      tags:
+        - electric-lock
+      security:
+        - bearerAuth: []
+      summary: 電子錠を操作する
+      operationId: updateElectricLock
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - ulid
+                - state
+              properties:
+                ulid:
+                  $ref: '#/components/schemas/ElectricLockUlid'
+                state:
+                  $ref: '#/components/schemas/ElectricLockState'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: string
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Bearer token authentication
+  schemas:
+    AirconUlid:
+      type: string
+      example: 01J9K72ZRXVQR449DYE4HYKZ49
+      description: 空調機器をULIDの形式で指定する。詳細は別途参照
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - message
+      properties:
+        error:
+          type: string
+          example: INVALID_REQUEST
+        message:
+          type: string
+          example: The request parameters are invalid
+        details:
+          type: object
+          additionalProperties: true
+    AirconMode:
+      type: string
+      minLength: 1
+      maxLength: 2
+      example: '2'
+      description: 運転モードを数値で指定する。詳細は別途参照
+    AirconTemperature:
+      type: string
+      minLength: 1
+      maxLength: 2
+      example: '26'
+      description: 温度設定値（℃）
+    LightUlid:
+      type: string
+      example: 01J9K72ZRXVQR449DYE4HYKZ49
+      description: 照明機器をULIDで指定する。詳細は別途参照
+    LightScene:
+      type: integer
+      example: 2
+      minimum: 1
+      maximum: 10
+      description: シーンを数値で指定する。詳細は別途参照
+    VentilatorUlid:
+      type: string
+      example: 01J9K72ZRXVQR449DYE4HYKZ49
+      description: ベンチレーター機器をULIDの形式で指定する。詳細は別途参照
+    VentilatorOperation:
+      type: string
+      minLength: 1
+      maxLength: 2
+      example: '2'
+      description: 運転状態を数値で指定する。詳細は別途参照
+    VentilatorPercent:
+      type: string
+      minLength: 1
+      maxLength: 3
+      example: '50'
+      description: ベンチレータの開度を0~100%で指定する。詳細は別途参照
+    ElectricLockUlid:
+      type: string
+      example: 01J9K72ZRXVQR449DYE4HYKZ49
+      description: 電子錠をULIDの形式で指定する。詳細は別途参照
+    ElectricLockState:
+      type: string
+      enum:
+        - unlock
+        - lock
+      description: 電子錠の状態を指定する
+  responses:
+    Unauthorized:
+      description: Unauthorized - 認証が必要です
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: UNAUTHORIZED
+            message: 有効な認証トークンが必要です

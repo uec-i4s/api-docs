@@ -1,0 +1,54 @@
+get:
+  tags:
+    - electric-lock
+  security:
+    - bearerAuth: []
+  summary: 電子錠の状態を取得する
+  operationId: getElectricLockStatus
+  parameters:
+    - name: ulid
+      in: query
+      required: true
+      description: 電子錠をULIDの形式で指定する。詳細は別途参照
+      schema:
+        $ref: ../components/schemas/electric-lock.yaml#/ElectricLockUlid
+  responses:
+    "200":
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            type: string
+    "401":
+      $ref: ../../common/v1/responses/4xx.yaml#/Unauthorized
+
+put:
+  tags:
+    - electric-lock
+  security:
+    - bearerAuth: []
+  summary: 電子錠を操作する
+  operationId: updateElectricLock
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - ulid
+            - state
+          properties:
+            ulid:
+              $ref: ../components/schemas/electric-lock.yaml#/ElectricLockUlid
+            state:
+              $ref: ../components/schemas/electric-lock.yaml#/ElectricLockState
+  responses:
+    "200":
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            type: string
+    "401":
+      $ref: ../../common/v1/responses/4xx.yaml#/Unauthorized

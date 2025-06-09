@@ -1,0 +1,11 @@
+ElectricLockUlid:
+  type: string
+  example: "01J9K72ZRXVQR449DYE4HYKZ49"
+  description: 電子錠をULIDの形式で指定する。詳細は別途参照
+
+ElectricLockState:
+  type: string
+  enum:
+    - "unlock"
+    - "lock"
+  description: 電子錠の状態を指定する

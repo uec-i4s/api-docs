@@ -1,0 +1,11 @@
+LightUlid:
+  type: string
+  example: "01J9K72ZRXVQR449DYE4HYKZ49"
+  description: 照明機器をULIDで指定する。詳細は別途参照
+
+LightScene:
+  type: integer
+  example: 2
+  minimum: 1
+  maximum: 10
+  description: シーンを数値で指定する。詳細は別途参照
