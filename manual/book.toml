@@ -1,0 +1,5 @@
+[book]
+authors = ["ryota2357"]
+language = "ja"
+src = "src"
+title = "UEC API manual"

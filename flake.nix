@@ -26,6 +26,7 @@
         devShells.default = pkgs.mkShellNoCC {
           packages = with pkgs; [
             redocly
+            mdbook
             nodejs_22
             pnpm
             nil
