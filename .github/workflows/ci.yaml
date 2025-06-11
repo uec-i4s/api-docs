@@ -32,10 +32,10 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Install  dependencies
-        run: cd ui && nix develop -c pnpm install
+        run: cd swagger-ui && nix develop -c pnpm install
 
       - name: Codegen
-        run: cd ui && nix develop -c pnpm run codegen
+        run: cd swagger-ui && nix develop -c pnpm run codegen
 
       - name: Check codegen
         run: |
@@ -43,4 +43,4 @@ jobs:
           test -z "$(git status --porcelain)" || (echo '❌ There are uncommitted changes after pnpm run codegen. Please run pnpm run codegen and commit the changes.' && exit 1)
 
       - name: Build
-        run: cd ui && nix develop -c pnpm run build
+        run: cd swagger-ui && nix develop -c pnpm run build
