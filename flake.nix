@@ -25,6 +25,7 @@
       {
         devShells.default = pkgs.mkShellNoCC {
           packages = with pkgs; [
+            caddy
             redocly
             mdbook
             nodejs_22
