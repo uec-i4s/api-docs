@@ -1,4 +1,4 @@
-192.168.7.133, :2080 {
+http://192.168.7.133, :2080 {
    handle_path /swagger-ui/* {
        root * ./swagger-ui/dist
        file_server
@@ -9,3 +9,4 @@
        file_server
    }
 }
+# vim:ft=caddy
