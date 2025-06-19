@@ -1,11 +1,15 @@
 http://192.168.7.133, :2080 {
-   handle_path /swagger-ui/* {
-       root * ./swagger-ui/dist
+   redir / /manual/
+
+   redir /manual /manual/
+   handle_path /manual/* {
+       root * ./manual/book
        file_server
    }
 
-   handle_path /manual/* {
-       root * ./manual/book
+   redir /swagger-ui /swagger-ui/
+   handle_path /swagger-ui/* {
+       root * ./swagger-ui/dist
        file_server
    }
 }
