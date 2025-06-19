@@ -1,13 +1,15 @@
 http://192.168.7.133, :2080 {
-   redir / /manual/
+   vars upstream_prefix /docs
 
-   redir /manual /manual/
+   redir /manual {vars.upstream_prefix}/manual/
+   redir /swagger-ui {vars.upstream_prefix}/swagger-ui/
+   redir / {vars.upstream_prefix}/manual/
+
    handle_path /manual/* {
        root * ./manual/book
        file_server
    }
 
-   redir /swagger-ui /swagger-ui/
    handle_path /swagger-ui/* {
        root * ./swagger-ui/dist
        file_server
