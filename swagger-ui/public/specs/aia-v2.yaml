@@ -1,0 +1,445 @@
+openapi: 3.0.4
+info:
+  title: UEC Library AIA API v2
+  description: AIA (Air conditioning, Illumination, Air quality) control API for UEC Library (v2)
+  version: 2.0.0
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  contact:
+    name: UEC i4s
+    url: http://i4s.uec.ac.jp
+servers:
+  - url: http://openapi.i4s.uec.ac.jp/api/v2/aia
+    description: Production server via API Gateway
+  - url: http://openapi.i4s.uec.ac.jp:8889/v2/aia
+    description: Development server
+security:
+  - bearerAuth: []
+tags:
+  - name: aircons
+    description: Air conditioning control operations
+  - name: lights
+    description: Lighting control operations
+  - name: ventilators
+    description: Ventilator control operations
+paths:
+  /aircons:
+    get:
+      tags:
+        - aircons
+      summary: 空調ULID一覧を取得する
+      operationId: getAirconUlids
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          $ref: '#/components/responses/DeviceList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+  /aircons/{ulid}:
+    get:
+      tags:
+        - aircons
+      summary: 特定の空調の状態を取得する
+      operationId: getAirconStatus
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/ulid'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AirconStatus'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /aircons/{ulid}/mode:
+    put:
+      tags:
+        - aircons
+      summary: 空調の運転モードを設定する
+      description: 'mode=0: 運転停止、1: 冷房、2:暖房、3:送風'
+      operationId: updateAirconMode
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/ulid'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - mode
+              properties:
+                mode:
+                  $ref: '#/components/schemas/AirconMode'
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdateSuccess'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /aircons/{ulid}/temperature:
+    put:
+      tags:
+        - aircons
+      summary: 空調の設定温度を設定する
+      description: 18~28℃の範囲で指定
+      operationId: updateAirconTemperature
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/ulid'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - setpoint_temperature
+              properties:
+                setpoint_temperature:
+                  $ref: '#/components/schemas/AirconSetpointTemperature'
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdateSuccess'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /lights:
+    get:
+      tags:
+        - lights
+      summary: 照明ULID一覧を取得する
+      operationId: getLightUlids
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          $ref: '#/components/responses/DeviceList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+  /lights/{ulid}:
+    get:
+      tags:
+        - lights
+      summary: 特定の照明の状態を取得する
+      operationId: getLightStatus
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/ulid'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LightStatus'
+              example:
+                scene: 2
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /lights/{ulid}/scene:
+    put:
+      tags:
+        - lights
+      summary: 照明のシーンを設定する
+      description: 各シーンについては別途参照
+      operationId: updateLightScene
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/ulid'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - scene
+              properties:
+                scene:
+                  $ref: '#/components/schemas/LightScene'
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdateSuccess'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /ventilators:
+    get:
+      tags:
+        - ventilators
+      summary: ベンチレーターULID一覧を取得する
+      operationId: getVentilatorUlids
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          $ref: '#/components/responses/DeviceList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+  /ventilators/{ulid}:
+    get:
+      tags:
+        - ventilators
+      summary: 特定のベンチレーターの状態を取得する
+      operationId: getVentilatorStatus
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/ulid'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VentilatorStatus'
+              example:
+                percent: 50
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /ventilators/{ulid}/opening:
+    put:
+      tags:
+        - ventilators
+      summary: ベンチレーターの開度を設定する
+      description: VAV開度を0から100%で指定する
+      operationId: updateVentilatorOpening
+      security:
+        - bearerAuth: []
+      parameters:
+        - $ref: '#/components/parameters/ulid'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - percent
+              properties:
+                percent:
+                  $ref: '#/components/schemas/VentilatorPercent'
+      responses:
+        '200':
+          $ref: '#/components/responses/UpdateSuccess'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Bearer token authentication
+  schemas:
+    DeviceList:
+      type: object
+      required:
+        - devices
+      properties:
+        devices:
+          type: array
+          items:
+            type: object
+            required:
+              - ulid
+              - name
+            properties:
+              ulid:
+                type: string
+                pattern: ^[0-9A-HJKMNP-TV-Z]{26}$
+                example: 01JBGZV7E89TBDXS6Z8HE3A2J6
+              name:
+                type: string
+                example: 会議室A 空調機
+              description:
+                type: string
+                example: 3階会議室Aの空調設備
+    ErrorResponse:
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          type: string
+          description: 人間が読めるエラーの要約
+          example: Unauthorized
+        detail:
+          type: string
+          description: インスタンス固有の詳細説明
+          example: 有効な認証トークンが必要です
+    AirconMode:
+      type: integer
+      example: 2
+      description: 運転モードを数値で指定する。詳細は別途参照
+    AirconSetpointTemperature:
+      type: number
+      format: float
+      minimum: 18
+      maximum: 28
+      example: 24.5
+      description: 設定温度（℃）
+    AirconRoomTemperature:
+      type: number
+      format: float
+      example: 24.5
+      description: 室内温度（℃）
+    AirconStatus:
+      type: object
+      required:
+        - mode
+        - setpoint_temperature
+        - room_temperature
+      properties:
+        mode:
+          $ref: '#/components/schemas/AirconMode'
+        setpoint_temperature:
+          $ref: '#/components/schemas/AirconSetpointTemperature'
+        room_temperature:
+          $ref: '#/components/schemas/AirconRoomTemperature'
+    UpdateSuccess:
+      type: object
+      properties:
+        message:
+          type: string
+    LightScene:
+      type: integer
+      minimum: 1
+      maximum: 10
+      example: 2
+      description: シーンを数値で指定する。詳細は別途参照してください
+    LightStatus:
+      type: object
+      required:
+        - scene
+      properties:
+        scene:
+          $ref: '#/components/schemas/LightScene'
+    VentilatorPercent:
+      type: integer
+      example: 50
+      minimum: 0
+      maximum: 100
+      description: VAV開度を0~100%で指定する
+    VentilatorStatus:
+      type: object
+      required:
+        - percent
+      properties:
+        percent:
+          $ref: '#/components/schemas/VentilatorPercent'
+  responses:
+    DeviceList:
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeviceList'
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            title: Unauthorized
+            detail: 認証情報が不足しています
+    BadGateway:
+      description: Bad Gateway
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            title: Bad Gateway
+            detail: 外部サービスとの通信に失敗しました
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            title: Not Found
+            detail: 指定されたULIDのデバイスが見つかりません
+    GatewayTimeout:
+      description: Gateway Timeout
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            title: Gateway Timeout
+            detail: 外部サービスからの応答がタイムアウトしました
+    UpdateSuccess:
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UpdateSuccess'
+  parameters:
+    ulid:
+      name: ulid
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: ^[0-9A-HJKMNP-TV-Z]{26}$
+        example: 01JBGZV7E89TBDXS6Z8HE3A2J6
+      description: デバイスのULID

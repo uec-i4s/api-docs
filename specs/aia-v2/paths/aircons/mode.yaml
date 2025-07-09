@@ -1,0 +1,32 @@
+put:
+  tags:
+    - aircons
+  summary: 空調の運転モードを設定する
+  description: 'mode=0: 運転停止、1: 冷房、2:暖房、3:送風'
+  operationId: updateAirconMode
+  security:
+    - bearerAuth: []
+  parameters:
+    - $ref: ../../../common/v2/parameters/ulid.yaml
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - mode
+          properties:
+            mode:
+              $ref: ../../components/schemas/aircon.yaml#/AirconMode
+  responses:
+    "200":
+      $ref: ../../../common/v2/responses/2xx.yaml#/UpdateSuccess
+    "401":
+      $ref: ../../../common/v2/responses/4xx.yaml#/Unauthorized
+    "404":
+      $ref: ../../../common/v2/responses/4xx.yaml#/NotFound
+    "502":
+      $ref: ../../../common/v2/responses/5xx.yaml#/BadGateway
+    "504":
+      $ref: ../../../common/v2/responses/5xx.yaml#/GatewayTimeout

@@ -1,0 +1,26 @@
+get:
+  tags:
+    - ventilators
+  summary: 特定のベンチレーターの状態を取得する
+  operationId: getVentilatorStatus
+  security:
+    - bearerAuth: []
+  parameters:
+    - $ref: ../../../common/v2/parameters/ulid.yaml
+  responses:
+    "200":
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/ventilator.yaml#/VentilatorStatus
+          example:
+            percent: 50
+    "401":
+      $ref: ../../../common/v2/responses/4xx.yaml#/Unauthorized
+    "404":
+      $ref: ../../../common/v2/responses/4xx.yaml#/NotFound
+    "502":
+      $ref: ../../../common/v2/responses/5xx.yaml#/BadGateway
+    "504":
+      $ref: ../../../common/v2/responses/5xx.yaml#/GatewayTimeout

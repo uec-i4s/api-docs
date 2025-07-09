@@ -1,0 +1,32 @@
+put:
+  tags:
+    - aircons
+  summary: 空調の設定温度を設定する
+  description: 18~28℃の範囲で指定
+  operationId: updateAirconTemperature
+  security:
+    - bearerAuth: []
+  parameters:
+    - $ref: ../../../common/v2/parameters/ulid.yaml
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - setpoint_temperature
+          properties:
+            setpoint_temperature:
+              $ref: ../../components/schemas/aircon.yaml#/AirconSetpointTemperature
+  responses:
+    "200":
+      $ref: ../../../common/v2/responses/2xx.yaml#/UpdateSuccess
+    "401":
+      $ref: ../../../common/v2/responses/4xx.yaml#/Unauthorized
+    "404":
+      $ref: ../../../common/v2/responses/4xx.yaml#/NotFound
+    "502":
+      $ref: ../../../common/v2/responses/5xx.yaml#/BadGateway
+    "504":
+      $ref: ../../../common/v2/responses/5xx.yaml#/GatewayTimeout

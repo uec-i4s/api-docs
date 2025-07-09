@@ -5,6 +5,7 @@ import "swagger-ui/dist/swagger-ui.css";
 SwaggerUI({
   urls: [
     { url: "./specs/aia-v1.yaml", name: "AIA v1" },
+    { url: "./specs/aia-v2.yaml", name: "AIA v2" },
     { url: "./specs/e36-v1.yaml", name: "E36 v1" },
     { url: "./specs/omron-v1.yaml", name: "OMRON v1" },
     { url: "./specs/patlite-v1.yaml", name: "Patlite v1" },

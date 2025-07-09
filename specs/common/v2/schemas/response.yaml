@@ -1,0 +1,43 @@
+ErrorResponse:
+  type: object
+  required:
+    - title
+  properties:
+    title:
+      type: string
+      description: 人間が読めるエラーの要約
+      example: "Unauthorized"
+    detail:
+      type: string
+      description: インスタンス固有の詳細説明
+      example: "有効な認証トークンが必要です"
+
+DeviceList:
+  type: object
+  required:
+    - devices
+  properties:
+    devices:
+      type: array
+      items:
+        type: object
+        required:
+          - ulid
+          - name
+        properties:
+          ulid:
+            type: string
+            pattern: '^[0-9A-HJKMNP-TV-Z]{26}$'
+            example: "01JBGZV7E89TBDXS6Z8HE3A2J6"
+          name:
+            type: string
+            example: "会議室A 空調機"
+          description:
+            type: string
+            example: "3階会議室Aの空調設備"
+
+UpdateSuccess:
+  type: object
+  properties:
+    message:
+      type: string

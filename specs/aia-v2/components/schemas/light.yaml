@@ -1,0 +1,14 @@
+LightScene:
+  type: integer
+  minimum: 1
+  maximum: 10
+  example: 2
+  description: シーンを数値で指定する。詳細は別途参照してください
+
+LightStatus:
+  type: object
+  required:
+    - scene
+  properties:
+    scene:
+      $ref: "#/LightScene"
