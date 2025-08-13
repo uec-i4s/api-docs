@@ -1,8 +1,0 @@
-name: ulid
-in: path
-required: true
-schema:
-  type: string
-  pattern: '^[0-9A-HJKMNP-TV-Z]{26}$'
-  example: "01JBGZV7E89TBDXS6Z8HE3A2J6"
-description: デバイスのULID

@@ -19,7 +19,7 @@ jobs:
         uses: ./.github/actions/setup
 
       - name: Lint
-        run: nix develop -c redocly lint 'specs/*/openapi.yaml'
+        run: nix develop -c redocly lint 'specs/*.yaml'
 
   ui-build:
     name: UI Build
