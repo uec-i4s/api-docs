@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: UEC Library AIA API
+  title: UEC Library AIA API v1
   description: AIA (Air conditioning, Illumination, Air quality) control API for UEC Library
   version: 0.3.0
   license:
