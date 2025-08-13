@@ -3,6 +3,7 @@ http://192.168.7.133, :2080 {
 
    redir /manual {vars.upstream_prefix}/manual/
    redir /swagger-ui {vars.upstream_prefix}/swagger-ui/
+   redir /specs {vars.upstream_prefix}/specs/
    redir / {vars.upstream_prefix}/manual/
 
    handle_path /manual/* {
@@ -13,6 +14,11 @@ http://192.168.7.133, :2080 {
    handle_path /swagger-ui/* {
        root * ./swagger-ui/dist
        file_server
+   }
+
+   handle_path /specs/* {
+       root * ./specs
+       file_server browse
    }
 }
 # vim:ft=caddy
