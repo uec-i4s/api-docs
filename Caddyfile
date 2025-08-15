@@ -1,3 +1,5 @@
+# 一応debug用とかに残している
+# 変更した場合は api-docs.nix も変更すること
 http://192.168.7.133, :2080 {
    vars upstream_prefix /docs
 

@@ -8,39 +8,29 @@ on:
   workflow_dispatch:
 
 jobs:
-  spec-lint:
-    name: Spec Lint
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
-      - name: Setup
-        uses: ./.github/actions/setup
-
-      - name: Lint
-        run: nix develop -c redocly lint 'specs/*.yaml'
-
-  ui-build:
-    name: UI Build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-
-      - name: Setup
-        uses: ./.github/actions/setup
-
-      - name: Install  dependencies
-        run: cd swagger-ui && nix develop -c pnpm install
-
-      - name: Codegen
-        run: cd swagger-ui && nix develop -c pnpm run codegen
-
-      - name: Check codegen
-        run: |
-          git status --porcelain
-          test -z "$(git status --porcelain)" || (echo '❌ There are uncommitted changes after pnpm run codegen. Please run pnpm run codegen and commit the changes.' && exit 1)
+      - name: Set up Nix
+        uses: ./.github/actions/setup-nix
 
       - name: Build
-        run: cd swagger-ui && nix develop -c pnpm run build
+        run: nix build
+
+  style:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: Set up Nix
+        uses: ./.github/actions/setup-nix
+
+      - name: Format
+        run: |
+          nix fmt
+          git status --porcelain
+          test -z "$(git status --porcelain)" || (echo '❌ Format changed files, please commit them.' && exit 1)

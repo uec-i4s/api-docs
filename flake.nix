@@ -21,75 +21,66 @@
       system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        writeShellScript =
-          name: script:
-          toString (
-            pkgs.writeShellScript name ''
-              set -euo pipefail
-              while true; do
-                if [[ -f flake.nix ]]; then
-                  break
-                fi
-                if [[ "$(pwd)" == "/" ]]; then
-                  echo "flake.nix not found." >&2
-                  exit 1
-                fi
-                cd ..
-              done
-              ESC=$(printf '\033')
-              message() {
-                printf "''${ESC}[32m==>''${ESC}[m ''${ESC}[1m%s''${ESC}[m\n" "$*"
-              }
-              ${script}
-            ''
-          );
+        lib = pkgs.lib;
       in
       {
-        apps =
+        packages =
           let
-            exportPath = plist: ''
-              export PATH="${pkgs.lib.makeBinPath plist}:$PATH"
-            '';
+            swagger-ui-dist = pkgs.callPackage ./swagger-ui { };
+            manual-dist = pkgs.callPackage ./manual { };
+            api-docs = pkgs.callPackage ./api-docs.nix {
+              inherit swagger-ui-dist manual-dist;
+            };
           in
           {
-            up = {
+            inherit swagger-ui-dist manual-dist api-docs;
+            default = api-docs;
+          };
+
+        apps =
+          let
+            api-docs = self.packages.${system}.api-docs;
+            getExe = lib.getExe;
+          in
+          {
+            run = {
               type = "app";
-              program = writeShellScript "up" ''
-                ${exportPath [
-                  pkgs.nodejs_22
-                  pkgs.pnpm
-                  pkgs.mdbook
-                  pkgs.caddy
-                ]}
-
-                message Build swagger-ui [pnpm]
-                cd ./swagger-ui && pnpm install && pnpm build && cd ..
-
-                message Build manual [mdbook]
-                cd ./manual && mdbook build && cd ..
-
-                message caddy start
-                sudo env "PATH=$PATH" caddy start
-              '';
+              program = "${api-docs}/bin/api-docs-run";
             };
-            down = {
+
+            start = {
               type = "app";
-              program = writeShellScript "down" ''
-                ${exportPath [
-                  pkgs.caddy
-                ]}
-                message caddy stop
-                sudo env "PATH=$PATH" caddy stop
-              '';
+              program = "${api-docs}/bin/api-docs-start";
+            };
+
+            stop = {
+              type = "app";
+              program = "${api-docs}/bin/api-docs-stop";
+            };
+
+            default = {
+              type = "app";
+              program = toString (
+                pkgs.writeShellScript "chose-api-docs-cmd" ''
+                  choose=$(${getExe pkgs.gum} choose --header="" \
+                    --cursor-prefix='○ ' --selected-prefix='● ' --unselected-prefix='○ ' \
+                    --cursor.foreground='75' --selected.foreground='75' \
+                    'caddy run' 'caddy start' 'caddy stop')
+                  case "$choose" in
+                    'caddy run')   exec ${api-docs}/bin/api-docs-run ;;
+                    'caddy start') exec ${api-docs}/bin/api-docs-start ;;
+                    'caddy stop')  exec ${api-docs}/bin/api-docs-stop ;;
+                  esac
+                ''
+              );
             };
           };
 
         devShells.default = pkgs.mkShellNoCC {
           packages = with pkgs; [
             caddy
-            redocly
             mdbook
-            nodejs_22
+            nodejs_24
             pnpm
             nil
             typescript-language-server
