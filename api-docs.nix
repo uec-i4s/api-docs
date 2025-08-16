@@ -1,6 +1,8 @@
 {
   stdenv,
   writeTextFile,
+  writeShellApplication,
+  symlinkJoin,
   caddy,
   swagger-ui-dist,
   manual-dist,
@@ -59,41 +61,40 @@ let
       }
     '';
   };
+
+  run = writeShellApplication {
+    name = "api-docs-run";
+    runtimeInputs = [ caddy ];
+    text = ''
+      set -e
+      exec caddy run --config ${caddyfile} --adapter caddyfile
+    '';
+  };
+
+  start = writeShellApplication {
+    name = "api-docs-start";
+    runtimeInputs = [ caddy ];
+    text = ''
+      set -e
+      exec caddy start --config ${caddyfile} --adapter caddyfile
+    '';
+  };
+
+  stop = writeShellApplication {
+    name = "api-docs-stop";
+    runtimeInputs = [ caddy ];
+    text = ''
+      set -e
+      exec caddy stop
+    '';
+  };
 in
-stdenv.mkDerivation (finalAttrs: {
-  pname = "api-docs";
-  version = "0.0.0";
 
-  nativeBuildInputs = [ caddy ];
-
-  phases = [ "installPhase" ];
-
-  installPhase = ''
-    runHook preInstall
-
-    mkdir -p $out/bin
-
-    cat > $out/bin/api-docs-run << EOF
-    #!${stdenv.shell}
-    set -e
-    exec caddy run --config ${caddyfile} --adapter caddyfile
-    EOF
-    chmod +x $out/bin/api-docs-run
-
-    cat > $out/bin/api-docs-start << EOF
-    #!${stdenv.shell}
-    set -e
-    exec caddy start --config ${caddyfile} --adapter caddyfile
-    EOF
-    chmod +x $out/bin/api-docs-start
-
-    cat > $out/bin/api-docs-stop << EOF
-    #!${stdenv.shell}
-    set -e
-    exec caddy stop
-    EOF
-    chmod +x $out/bin/api-docs-stop
-
-    runHook postInstall
-  '';
-})
+symlinkJoin {
+  name = "api-docs";
+  paths = [
+    run
+    start
+    stop
+  ];
+}
