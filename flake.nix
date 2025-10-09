@@ -67,9 +67,9 @@
                     --cursor.foreground='75' --selected.foreground='75' \
                     'caddy run' 'caddy start' 'caddy stop')
                   case "$choose" in
-                    'caddy run')   exec ${api-docs}/bin/api-docs-run ;;
-                    'caddy start') exec ${api-docs}/bin/api-docs-start ;;
-                    'caddy stop')  exec ${api-docs}/bin/api-docs-stop ;;
+                    'caddy run')   exec sudo ${api-docs}/bin/api-docs-run ;;
+                    'caddy start') exec sudo ${api-docs}/bin/api-docs-start ;;
+                    'caddy stop')  exec sudo ${api-docs}/bin/api-docs-stop ;;
                   esac
                 ''
               );
