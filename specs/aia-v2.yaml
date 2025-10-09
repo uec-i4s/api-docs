@@ -372,7 +372,8 @@ components:
         scene:
           $ref: '#/components/schemas/LightScene'
     VentilatorPercent:
-      type: integer
+      type: number
+      format: float
       example: 50
       minimum: 0
       maximum: 100
