@@ -1,0 +1,1249 @@
+openapi: 3.0.4
+info:
+  title: UEC OMRON Sensor API
+  description: OMRON environmental sensor data API for UEC
+  version: 2.0.0
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  contact:
+    name: UEC i4s
+    url: http://i4s.uec.ac.jp
+servers:
+  - url: http://openapi.i4s.uec.ac.jp/api/v2/omron
+    description: Production server via API Gateway
+  - url: http://192.168.12.60:8889/v2/omron
+    description: Development server
+security:
+  - bearerAuth: []
+tags:
+  - name: co2
+    description: CO2 sensor data operations
+  - name: temperature
+    description: Temperature sensor data operations
+  - name: humidity
+    description: Humidity sensor data operations
+  - name: pressure
+    description: Pressure sensor data operations
+  - name: light
+    description: Light sensor data operations
+  - name: sound
+    description: Sound sensor data operations
+  - name: discomfort-index
+    description: Discomfort index sensor data operations
+  - name: heatstroke
+    description: Heatstroke index sensor data operations
+  - name: etvoc
+    description: eTVOC sensor data operations
+  - name: human-detection
+    description: Human detection sensor data operations
+  - name: num-of-people
+    description: Number of people detection sensor data operations
+paths:
+  /co2:
+    get:
+      tags:
+        - co2
+      security:
+        - bearerAuth: []
+      summary: CO2センサーULID一覧を取得する
+      operationId: listCO2Sensors
+      responses:
+        '200':
+          $ref: '#/components/responses/DeviceList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /co2/{ulid}:
+    get:
+      tags:
+        - co2
+      security:
+        - bearerAuth: []
+      summary: CO2センサーの時系列データを取得する
+      operationId: getCO2SensorData
+      parameters:
+        - $ref: '#/components/parameters/ulid'
+        - $ref: '#/components/parameters/interval'
+        - $ref: '#/components/parameters/start'
+        - $ref: '#/components/parameters/end'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CO2DataList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /co2/{ulid}/latest:
+    get:
+      tags:
+        - co2
+      security:
+        - bearerAuth: []
+      summary: CO2センサーの最新値を取得する
+      operationId: getLatestCO2SensorData
+      parameters:
+        - $ref: '#/components/parameters/ulid'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CO2DataList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /temperature:
+    get:
+      tags:
+        - temperature
+      security:
+        - bearerAuth: []
+      summary: 温度センサーULID一覧を取得する
+      operationId: listTemperatureSensors
+      responses:
+        '200':
+          $ref: '#/components/responses/DeviceList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /temperature/{ulid}:
+    get:
+      tags:
+        - temperature
+      security:
+        - bearerAuth: []
+      summary: 温度センサーの時系列データを取得する
+      operationId: getTemperatureSensorData
+      parameters:
+        - $ref: '#/components/parameters/ulid'
+        - $ref: '#/components/parameters/interval'
+        - $ref: '#/components/parameters/start'
+        - $ref: '#/components/parameters/end'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemperatureDataList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /temperature/{ulid}/latest:
+    get:
+      tags:
+        - temperature
+      security:
+        - bearerAuth: []
+      summary: 温度センサーの最新値を取得する
+      operationId: getLatestTemperatureSensorData
+      parameters:
+        - $ref: '#/components/parameters/ulid'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TemperatureDataList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /humidity:
+    get:
+      tags:
+        - humidity
+      security:
+        - bearerAuth: []
+      summary: 湿度センサーULID一覧を取得する
+      operationId: listHumiditySensors
+      responses:
+        '200':
+          $ref: '#/components/responses/DeviceList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /humidity/{ulid}:
+    get:
+      tags:
+        - humidity
+      security:
+        - bearerAuth: []
+      summary: 湿度センサーの時系列データを取得する
+      operationId: getHumiditySensorData
+      parameters:
+        - $ref: '#/components/parameters/ulid'
+        - $ref: '#/components/parameters/interval'
+        - $ref: '#/components/parameters/start'
+        - $ref: '#/components/parameters/end'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HumidityDataList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /humidity/{ulid}/latest:
+    get:
+      tags:
+        - humidity
+      security:
+        - bearerAuth: []
+      summary: 湿度センサーの最新値を取得する
+      operationId: getLatestHumiditySensorData
+      parameters:
+        - $ref: '#/components/parameters/ulid'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HumidityDataList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /pressure:
+    get:
+      tags:
+        - pressure
+      security:
+        - bearerAuth: []
+      summary: 気圧センサーULID一覧を取得する
+      operationId: listPressureSensors
+      responses:
+        '200':
+          $ref: '#/components/responses/DeviceList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /pressure/{ulid}:
+    get:
+      tags:
+        - pressure
+      security:
+        - bearerAuth: []
+      summary: 気圧センサーの時系列データを取得する
+      operationId: getPressureSensorData
+      parameters:
+        - $ref: '#/components/parameters/ulid'
+        - $ref: '#/components/parameters/interval'
+        - $ref: '#/components/parameters/start'
+        - $ref: '#/components/parameters/end'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PressureDataList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /pressure/{ulid}/latest:
+    get:
+      tags:
+        - pressure
+      security:
+        - bearerAuth: []
+      summary: 気圧センサーの最新値を取得する
+      operationId: getLatestPressureSensorData
+      parameters:
+        - $ref: '#/components/parameters/ulid'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PressureDataList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /light:
+    get:
+      tags:
+        - light
+      security:
+        - bearerAuth: []
+      summary: 照度センサーULID一覧を取得する
+      operationId: listLightSensors
+      responses:
+        '200':
+          $ref: '#/components/responses/DeviceList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /light/{ulid}:
+    get:
+      tags:
+        - light
+      security:
+        - bearerAuth: []
+      summary: 照度センサーの時系列データを取得する
+      operationId: getLightSensorData
+      parameters:
+        - $ref: '#/components/parameters/ulid'
+        - $ref: '#/components/parameters/interval'
+        - $ref: '#/components/parameters/start'
+        - $ref: '#/components/parameters/end'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LightDataList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /light/{ulid}/latest:
+    get:
+      tags:
+        - light
+      security:
+        - bearerAuth: []
+      summary: 照度センサーの最新値を取得する
+      operationId: getLatestLightSensorData
+      parameters:
+        - $ref: '#/components/parameters/ulid'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LightDataList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /sound:
+    get:
+      tags:
+        - sound
+      security:
+        - bearerAuth: []
+      summary: 音圧レベルセンサーULID一覧を取得する
+      operationId: listSoundSensors
+      responses:
+        '200':
+          $ref: '#/components/responses/DeviceList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /sound/{ulid}:
+    get:
+      tags:
+        - sound
+      security:
+        - bearerAuth: []
+      summary: 音圧レベルセンサーの時系列データを取得する
+      operationId: getSoundSensorData
+      parameters:
+        - $ref: '#/components/parameters/ulid'
+        - $ref: '#/components/parameters/interval'
+        - $ref: '#/components/parameters/start'
+        - $ref: '#/components/parameters/end'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SoundDataList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /sound/{ulid}/latest:
+    get:
+      tags:
+        - sound
+      security:
+        - bearerAuth: []
+      summary: 音圧レベルセンサーの最新値を取得する
+      operationId: getLatestSoundSensorData
+      parameters:
+        - $ref: '#/components/parameters/ulid'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SoundDataList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /discomfort-index:
+    get:
+      tags:
+        - discomfort-index
+      security:
+        - bearerAuth: []
+      summary: 不快指数センサーULID一覧を取得する
+      operationId: listDiscomfortIndexSensors
+      responses:
+        '200':
+          $ref: '#/components/responses/DeviceList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /discomfort-index/{ulid}:
+    get:
+      tags:
+        - discomfort-index
+      security:
+        - bearerAuth: []
+      summary: 不快指数センサーの時系列データを取得する
+      operationId: getDiscomfortIndexSensorData
+      parameters:
+        - $ref: '#/components/parameters/ulid'
+        - $ref: '#/components/parameters/interval'
+        - $ref: '#/components/parameters/start'
+        - $ref: '#/components/parameters/end'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiscomfortIndexDataList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /discomfort-index/{ulid}/latest:
+    get:
+      tags:
+        - discomfort-index
+      security:
+        - bearerAuth: []
+      summary: 不快指数センサーの最新値を取得する
+      operationId: getLatestDiscomfortIndexSensorData
+      parameters:
+        - $ref: '#/components/parameters/ulid'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DiscomfortIndexDataList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /heatstroke:
+    get:
+      tags:
+        - heatstroke
+      security:
+        - bearerAuth: []
+      summary: 熱中症指数センサーULID一覧を取得する
+      operationId: listHeatstrokeSensors
+      responses:
+        '200':
+          $ref: '#/components/responses/DeviceList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /heatstroke/{ulid}:
+    get:
+      tags:
+        - heatstroke
+      security:
+        - bearerAuth: []
+      summary: 熱中症指数センサーの時系列データを取得する
+      operationId: getHeatstrokeSensorData
+      parameters:
+        - $ref: '#/components/parameters/ulid'
+        - $ref: '#/components/parameters/interval'
+        - $ref: '#/components/parameters/start'
+        - $ref: '#/components/parameters/end'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HeatstrokeDataList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /heatstroke/{ulid}/latest:
+    get:
+      tags:
+        - heatstroke
+      security:
+        - bearerAuth: []
+      summary: 熱中症指数センサーの最新値を取得する
+      operationId: getLatestHeatstrokeSensorData
+      parameters:
+        - $ref: '#/components/parameters/ulid'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HeatstrokeDataList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /etvoc:
+    get:
+      tags:
+        - etvoc
+      security:
+        - bearerAuth: []
+      summary: eTVOCセンサーULID一覧を取得する
+      operationId: listETVOCSensors
+      responses:
+        '200':
+          $ref: '#/components/responses/DeviceList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /etvoc/{ulid}:
+    get:
+      tags:
+        - etvoc
+      security:
+        - bearerAuth: []
+      summary: eTVOCセンサーの時系列データを取得する
+      operationId: getETVOCSensorData
+      parameters:
+        - $ref: '#/components/parameters/ulid'
+        - $ref: '#/components/parameters/interval'
+        - $ref: '#/components/parameters/start'
+        - $ref: '#/components/parameters/end'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ETVOCDataList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /etvoc/{ulid}/latest:
+    get:
+      tags:
+        - etvoc
+      security:
+        - bearerAuth: []
+      summary: eTVOCセンサーの最新値を取得する
+      operationId: getLatestETVOCSensorData
+      parameters:
+        - $ref: '#/components/parameters/ulid'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ETVOCDataList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /human-detection:
+    get:
+      tags:
+        - human-detection
+      security:
+        - bearerAuth: []
+      summary: 人検出センサーULID一覧を取得する
+      operationId: listHumanDetectionSensors
+      responses:
+        '200':
+          $ref: '#/components/responses/DeviceList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /human-detection/{ulid}:
+    get:
+      tags:
+        - human-detection
+      security:
+        - bearerAuth: []
+      summary: 人検出センサーの時系列データを取得する
+      operationId: getHumanDetectionSensorData
+      parameters:
+        - $ref: '#/components/parameters/ulid'
+        - $ref: '#/components/parameters/interval'
+        - $ref: '#/components/parameters/start'
+        - $ref: '#/components/parameters/end'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HumanDetectionDataList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /human-detection/{ulid}/latest:
+    get:
+      tags:
+        - human-detection
+      security:
+        - bearerAuth: []
+      summary: 人検出センサーの最新値を取得する
+      operationId: getLatestHumanDetectionSensorData
+      parameters:
+        - $ref: '#/components/parameters/ulid'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HumanDetectionDataList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /num-of-people:
+    get:
+      tags:
+        - num-of-people
+      security:
+        - bearerAuth: []
+      summary: 人数カウントセンサーULID一覧を取得する
+      operationId: listNumOfPeopleSensors
+      responses:
+        '200':
+          $ref: '#/components/responses/DeviceList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /num-of-people/{ulid}:
+    get:
+      tags:
+        - num-of-people
+      security:
+        - bearerAuth: []
+      summary: 人数カウントセンサーの時系列データを取得する
+      operationId: getNumOfPeopleSensorData
+      parameters:
+        - $ref: '#/components/parameters/ulid'
+        - $ref: '#/components/parameters/interval'
+        - $ref: '#/components/parameters/start'
+        - $ref: '#/components/parameters/end'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NumOfPeopleDataList'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+  /num-of-people/{ulid}/latest:
+    get:
+      tags:
+        - num-of-people
+      security:
+        - bearerAuth: []
+      summary: 人数カウントセンサーの最新値を取得する
+      operationId: getLatestNumOfPeopleSensorData
+      parameters:
+        - $ref: '#/components/parameters/ulid'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NumOfPeopleDataList'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '502':
+          $ref: '#/components/responses/BadGateway'
+        '504':
+          $ref: '#/components/responses/GatewayTimeout'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Bearer token authentication
+  schemas:
+    DeviceList:
+      type: object
+      required:
+        - devices
+      properties:
+        devices:
+          type: array
+          items:
+            type: object
+            required:
+              - ulid
+              - name
+            properties:
+              ulid:
+                type: string
+                pattern: ^[0-9A-HJKMNP-TV-Z]{26}$
+                example: 01JBGZV7E89TBDXS6Z8HE3A2J6
+              name:
+                type: string
+                example: 会議室A 空調機
+              description:
+                type: string
+                example: 3階会議室Aの空調設備
+    ErrorResponse:
+      type: object
+      required:
+        - title
+      properties:
+        title:
+          type: string
+          description: 人間が読めるエラーの要約
+          example: Unauthorized
+        detail:
+          type: string
+          description: インスタンス固有の詳細説明
+          example: 有効な認証トークンが必要です
+    BaseDataItem:
+      type: object
+      required:
+        - timestamp
+        - value
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: データ取得日時 (ISO 8601形式)
+          example: '2024-12-05T18:37:38+09:00'
+        value:
+          type: number
+          description: センサー値
+    CO2Value:
+      type: number
+      format: float
+      minimum: 0
+      maximum: 10000
+      description: CO2濃度 (ppm)
+      example: 440.2
+    CO2Data:
+      allOf:
+        - $ref: '#/components/schemas/BaseDataItem'
+        - type: object
+          properties:
+            value:
+              $ref: '#/components/schemas/CO2Value'
+    CO2DataList:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/CO2Data'
+          description: CO2センサーデータの配列
+    TemperatureValue:
+      type: number
+      format: float
+      minimum: -50
+      maximum: 100
+      description: 温度 (℃)
+      example: 23.5
+    TemperatureData:
+      allOf:
+        - $ref: '#/components/schemas/BaseDataItem'
+        - type: object
+          properties:
+            value:
+              $ref: '#/components/schemas/TemperatureValue'
+    TemperatureDataList:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/TemperatureData'
+          description: 温度センサーデータの配列
+    HumidityValue:
+      type: number
+      format: float
+      minimum: 0
+      maximum: 100
+      description: 相対湿度 (%RH)
+      example: 55
+    HumidityData:
+      allOf:
+        - $ref: '#/components/schemas/BaseDataItem'
+        - type: object
+          properties:
+            value:
+              $ref: '#/components/schemas/HumidityValue'
+    HumidityDataList:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/HumidityData'
+          description: 湿度センサーデータの配列
+    PressureValue:
+      type: number
+      format: float
+      minimum: 300
+      maximum: 1100
+      description: 大気圧 (hPa)
+      example: 1013.25
+    PressureData:
+      allOf:
+        - $ref: '#/components/schemas/BaseDataItem'
+        - type: object
+          properties:
+            value:
+              $ref: '#/components/schemas/PressureValue'
+    PressureDataList:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PressureData'
+          description: 気圧センサーデータの配列
+    LightValue:
+      type: number
+      format: float
+      minimum: 0
+      maximum: 100000
+      description: 照度 (lx)
+      example: 300
+    LightData:
+      allOf:
+        - $ref: '#/components/schemas/BaseDataItem'
+        - type: object
+          properties:
+            value:
+              $ref: '#/components/schemas/LightValue'
+    LightDataList:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/LightData'
+          description: 照度センサーデータの配列
+    SoundValue:
+      type: number
+      format: float
+      minimum: 0
+      maximum: 200
+      description: 音圧レベル (dB)
+      example: 45.2
+    SoundData:
+      allOf:
+        - $ref: '#/components/schemas/BaseDataItem'
+        - type: object
+          properties:
+            value:
+              $ref: '#/components/schemas/SoundValue'
+    SoundDataList:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/SoundData'
+          description: 音圧レベルセンサーデータの配列
+    DiscomfortIndexValue:
+      type: number
+      format: float
+      minimum: 0
+      maximum: 100
+      description: 不快指数
+      example: 65.5
+    DiscomfortIndexData:
+      allOf:
+        - $ref: '#/components/schemas/BaseDataItem'
+        - type: object
+          properties:
+            value:
+              $ref: '#/components/schemas/DiscomfortIndexValue'
+    DiscomfortIndexDataList:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/DiscomfortIndexData'
+          description: 不快指数センサーデータの配列
+    HeatstrokeValue:
+      type: number
+      format: float
+      minimum: 0
+      maximum: 50
+      description: 熱中症指数 (WBGT)
+      example: 21.5
+    HeatstrokeData:
+      allOf:
+        - $ref: '#/components/schemas/BaseDataItem'
+        - type: object
+          properties:
+            value:
+              $ref: '#/components/schemas/HeatstrokeValue'
+    HeatstrokeDataList:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/HeatstrokeData'
+          description: 熱中症指数センサーデータの配列
+    ETVOCValue:
+      type: number
+      format: float
+      minimum: 0
+      maximum: 60000
+      description: eTVOC濃度 (ppb)
+      example: 125
+    ETVOCData:
+      allOf:
+        - $ref: '#/components/schemas/BaseDataItem'
+        - type: object
+          properties:
+            value:
+              $ref: '#/components/schemas/ETVOCValue'
+    ETVOCDataList:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ETVOCData'
+          description: eTVOCセンサーデータの配列
+    HumanDetectionData:
+      type: object
+      required:
+        - timestamp
+        - detected
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: データ取得日時 (ISO 8601形式)
+          example: '2024-12-05T18:37:38+09:00'
+        detected:
+          type: boolean
+          description: 人検出状態
+          example: true
+    HumanDetectionDataList:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/HumanDetectionData'
+          description: 人検出センサーデータの配列
+    NumOfPeopleData:
+      type: object
+      required:
+        - timestamp
+        - count
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+          description: データ取得日時 (ISO 8601形式)
+          example: '2024-12-05T18:37:38+09:00'
+        count:
+          type: integer
+          minimum: 0
+          maximum: 1000
+          description: 検出人数
+          example: 5
+    NumOfPeopleDataList:
+      type: object
+      required:
+        - data
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/NumOfPeopleData'
+          description: 人数カウントセンサーデータの配列
+  responses:
+    DeviceList:
+      description: Successful response
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/DeviceList'
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            title: Unauthorized
+            detail: 認証情報が不足しています
+    BadGateway:
+      description: Bad Gateway
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            title: Bad Gateway
+            detail: 外部サービスとの通信に失敗しました
+    GatewayTimeout:
+      description: Gateway Timeout
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            title: Gateway Timeout
+            detail: 外部サービスからの応答がタイムアウトしました
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            title: Bad Request
+            detail: リクエストの形式が正しくありません
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            title: Not Found
+            detail: 指定されたULIDのデバイスが見つかりません
+  parameters:
+    ulid:
+      name: ulid
+      in: path
+      required: true
+      schema:
+        type: string
+        pattern: ^[0-9A-HJKMNP-TV-Z]{26}$
+        example: 01JBGZV7E89TBDXS6Z8HE3A2J6
+      description: デバイスのULID
+    interval:
+      name: interval
+      in: query
+      required: true
+      schema:
+        type: string
+        pattern: ^(\d+(\.\d+)?(ns|us|µs|ms|s|m|h))+$
+      description: 'データ集計間隔（例: "1m", "5m", "10m", "30m", "1h"）'
+      example: 5m
+    start:
+      name: start
+      in: query
+      required: true
+      schema:
+        type: string
+        format: date-time
+      description: 取得開始日時 (ISO 8601形式)
+      example: '2024-11-01T12:00:00+09:00'
+    end:
+      name: end
+      in: query
+      required: true
+      schema:
+        type: string
+        format: date-time
+      description: 取得終了日時 (ISO 8601形式)
+      example: '2024-11-01T15:00:00+09:00'
