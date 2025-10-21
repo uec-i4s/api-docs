@@ -29,7 +29,7 @@ paths:
       tags:
         - aircons
       summary: 空調ULID一覧を取得する
-      operationId: getAirconUlids
+      operationId: getAirconDeviceList
       security:
         - bearerAuth: []
       responses:
@@ -135,7 +135,7 @@ paths:
       tags:
         - lights
       summary: 照明ULID一覧を取得する
-      operationId: getLightUlids
+      operationId: getLightDeviceList
       security:
         - bearerAuth: []
       responses:
@@ -210,7 +210,7 @@ paths:
       tags:
         - ventilators
       summary: ベンチレーターULID一覧を取得する
-      operationId: getVentilatorUlids
+      operationId: getVentilatorDeviceList
       security:
         - bearerAuth: []
       responses:
@@ -299,18 +299,27 @@ components:
             type: object
             required:
               - ulid
-              - name
+              - location
+              - region
+              - building
+              - room
             properties:
               ulid:
                 type: string
                 pattern: ^[0-9A-HJKMNP-TV-Z]{26}$
                 example: 01JBGZV7E89TBDXS6Z8HE3A2J6
-              name:
+              location:
                 type: string
-                example: 会議室A 空調機
-              description:
+                example: UEC
+              region:
                 type: string
-                example: 3階会議室Aの空調設備
+                example: East
+              building:
+                type: string
+                example: A
+              room:
+                type: string
+                example: A-101
     ErrorResponse:
       type: object
       required:
