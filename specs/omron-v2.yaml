@@ -68,8 +68,8 @@ paths:
       parameters:
         - $ref: '#/components/parameters/ulid'
         - $ref: '#/components/parameters/interval'
-        - $ref: '#/components/parameters/start'
-        - $ref: '#/components/parameters/end'
+        - $ref: '#/components/parameters/since'
+        - $ref: '#/components/parameters/until'
       responses:
         '200':
           description: Successful response
@@ -103,7 +103,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CO2DataList'
+                $ref: '#/components/schemas/CO2Data'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -140,8 +140,8 @@ paths:
       parameters:
         - $ref: '#/components/parameters/ulid'
         - $ref: '#/components/parameters/interval'
-        - $ref: '#/components/parameters/start'
-        - $ref: '#/components/parameters/end'
+        - $ref: '#/components/parameters/since'
+        - $ref: '#/components/parameters/until'
       responses:
         '200':
           description: Successful response
@@ -175,7 +175,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TemperatureDataList'
+                $ref: '#/components/schemas/TemperatureData'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -212,8 +212,8 @@ paths:
       parameters:
         - $ref: '#/components/parameters/ulid'
         - $ref: '#/components/parameters/interval'
-        - $ref: '#/components/parameters/start'
-        - $ref: '#/components/parameters/end'
+        - $ref: '#/components/parameters/since'
+        - $ref: '#/components/parameters/until'
       responses:
         '200':
           description: Successful response
@@ -247,7 +247,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HumidityDataList'
+                $ref: '#/components/schemas/HumidityData'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -284,8 +284,8 @@ paths:
       parameters:
         - $ref: '#/components/parameters/ulid'
         - $ref: '#/components/parameters/interval'
-        - $ref: '#/components/parameters/start'
-        - $ref: '#/components/parameters/end'
+        - $ref: '#/components/parameters/since'
+        - $ref: '#/components/parameters/until'
       responses:
         '200':
           description: Successful response
@@ -319,7 +319,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PressureDataList'
+                $ref: '#/components/schemas/PressureData'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -356,8 +356,8 @@ paths:
       parameters:
         - $ref: '#/components/parameters/ulid'
         - $ref: '#/components/parameters/interval'
-        - $ref: '#/components/parameters/start'
-        - $ref: '#/components/parameters/end'
+        - $ref: '#/components/parameters/since'
+        - $ref: '#/components/parameters/until'
       responses:
         '200':
           description: Successful response
@@ -391,7 +391,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LightDataList'
+                $ref: '#/components/schemas/LightData'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -428,8 +428,8 @@ paths:
       parameters:
         - $ref: '#/components/parameters/ulid'
         - $ref: '#/components/parameters/interval'
-        - $ref: '#/components/parameters/start'
-        - $ref: '#/components/parameters/end'
+        - $ref: '#/components/parameters/since'
+        - $ref: '#/components/parameters/until'
       responses:
         '200':
           description: Successful response
@@ -463,7 +463,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/SoundDataList'
+                $ref: '#/components/schemas/SoundData'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -500,8 +500,8 @@ paths:
       parameters:
         - $ref: '#/components/parameters/ulid'
         - $ref: '#/components/parameters/interval'
-        - $ref: '#/components/parameters/start'
-        - $ref: '#/components/parameters/end'
+        - $ref: '#/components/parameters/since'
+        - $ref: '#/components/parameters/until'
       responses:
         '200':
           description: Successful response
@@ -535,7 +535,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DiscomfortIndexDataList'
+                $ref: '#/components/schemas/DiscomfortIndexData'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -572,8 +572,8 @@ paths:
       parameters:
         - $ref: '#/components/parameters/ulid'
         - $ref: '#/components/parameters/interval'
-        - $ref: '#/components/parameters/start'
-        - $ref: '#/components/parameters/end'
+        - $ref: '#/components/parameters/since'
+        - $ref: '#/components/parameters/until'
       responses:
         '200':
           description: Successful response
@@ -607,7 +607,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HeatstrokeDataList'
+                $ref: '#/components/schemas/HeatstrokeData'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -644,8 +644,8 @@ paths:
       parameters:
         - $ref: '#/components/parameters/ulid'
         - $ref: '#/components/parameters/interval'
-        - $ref: '#/components/parameters/start'
-        - $ref: '#/components/parameters/end'
+        - $ref: '#/components/parameters/since'
+        - $ref: '#/components/parameters/until'
       responses:
         '200':
           description: Successful response
@@ -679,7 +679,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ETVOCDataList'
+                $ref: '#/components/schemas/ETVOCData'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -716,8 +716,8 @@ paths:
       parameters:
         - $ref: '#/components/parameters/ulid'
         - $ref: '#/components/parameters/interval'
-        - $ref: '#/components/parameters/start'
-        - $ref: '#/components/parameters/end'
+        - $ref: '#/components/parameters/since'
+        - $ref: '#/components/parameters/until'
       responses:
         '200':
           description: Successful response
@@ -751,7 +751,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/HumanDetectionDataList'
+                $ref: '#/components/schemas/HumanDetectionData'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -788,8 +788,8 @@ paths:
       parameters:
         - $ref: '#/components/parameters/ulid'
         - $ref: '#/components/parameters/interval'
-        - $ref: '#/components/parameters/start'
-        - $ref: '#/components/parameters/end'
+        - $ref: '#/components/parameters/since'
+        - $ref: '#/components/parameters/until'
       responses:
         '200':
           description: Successful response
@@ -823,7 +823,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/NumOfPeopleDataList'
+                $ref: '#/components/schemas/NumOfPeopleData'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '404':
@@ -1236,23 +1236,23 @@ components:
       schema:
         type: string
         pattern: ^(\d+(\.\d+)?(ns|us|µs|ms|s|m|h))+$
-      description: 'データ集計間隔（例: "1m", "5m", "10m", "30m", "1h"）'
+      description: 'データ集計間隔（例: "1m", "30m", "1h", "12h", "1d"）'
       example: 5m
-    start:
-      name: start
+    since:
+      name: since
       in: query
       required: true
       schema:
         type: string
         format: date-time
-      description: 取得開始日時 (ISO 8601形式)
+      description: 取得開始日時 (RFC 3339 形式)
       example: '2024-11-01T12:00:00+09:00'
-    end:
-      name: end
+    until:
+      name: until
       in: query
       required: true
       schema:
         type: string
         format: date-time
-      description: 取得終了日時 (ISO 8601形式)
+      description: 取得終了日時 (RFC 3339 形式)
       example: '2024-11-01T15:00:00+09:00'
