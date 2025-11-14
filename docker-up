@@ -1,0 +1,49 @@
+#!/usr/bin/env bash
+
+# 将来的に Docker Swarm が使われるようになるので、それまでの暫定的なスクリプト
+
+set -euo pipefail
+
+CONTAINER_NAME="api-docs"
+HOST_PORT="80"
+CONTAINER_PORT="80"
+
+ESC=$(printf '\033')
+step() {
+  printf "$ESC[32m==>$ESC[m $ESC[1m%s$ESC[m\n" "$1"
+}
+
+cd "$(dirname "${BASH_SOURCE[0]}")"
+
+step "Building Docker image with Nix..."
+nix build .#dockerImage -o result
+
+step "Loading Docker image..."
+load_output=$(docker load < ./result)
+
+# Expected format: "Loaded image: <image-name>:<tag>"
+if [[ $load_output =~ Loaded\ image:\ (.+) ]]; then
+    IMAGE_NAME_TAG="${BASH_REMATCH[1]}"
+    echo "Loaded image: $IMAGE_NAME_TAG"
+else
+    echo "Error: Failed to parse image name from docker load output" >&2
+    echo "Output was: $load_output" >&2
+    exit 1
+fi
+
+if docker ps -q -f "name=^${CONTAINER_NAME}$" | grep -q .; then
+  step "Stopping existing container '${CONTAINER_NAME}'..."
+  docker stop "$CONTAINER_NAME"
+  step "Removing existing container '${CONTAINER_NAME}'..."
+  docker rm "$CONTAINER_NAME"
+fi
+
+step "Starting new container '$CONTAINER_NAME'..."
+docker run -d \
+  --name "$CONTAINER_NAME" \
+  -p "$HOST_PORT:$CONTAINER_PORT" \
+  --restart always \
+  "$IMAGE_NAME_TAG"
+
+step "Deployment completed successfully"
+echo "Container '$CONTAINER_NAME' is running on port $HOST_PORT"
