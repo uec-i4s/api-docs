@@ -22,6 +22,15 @@
       let
         pkgs = nixpkgs.legacyPackages.${system};
         lib = pkgs.lib;
+        linuxPkgs =
+          if pkgs.stdenv.hostPlatform.isLinux then
+            pkgs
+          else if system == "aarch64-darwin" then
+            pkgs.pkgsCross.aarch64-multiplatform
+          else if system == "x86_64-darwin" then
+            pkgs.pkgsCross.gnu64
+          else
+            throw "Unsupported system: ${system}";
       in
       {
         packages =
@@ -31,9 +40,30 @@
             api-docs = pkgs.callPackage ./api-docs.nix {
               inherit swagger-ui-dist manual-dist;
             };
+            dockerImage = pkgs.dockerTools.buildImage {
+              name = "api-docs";
+              copyToRoot = pkgs.buildEnv {
+                name = "api-docs-image-root";
+                paths = with linuxPkgs; [
+                  (callPackage ./api-docs.nix {
+                    swagger-ui-dist = callPackage ./swagger-ui { };
+                    manual-dist = callPackage ./manual { };
+                  })
+                ];
+              };
+              config = {
+                Cmd = [ "/bin/api-docs-run" ];
+                Expose = [ "80:80" ];
+              };
+            };
           in
           {
-            inherit swagger-ui-dist manual-dist api-docs;
+            inherit
+              swagger-ui-dist
+              manual-dist
+              api-docs
+              dockerImage
+              ;
             default = api-docs;
           };
 
