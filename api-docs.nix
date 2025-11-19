@@ -2,16 +2,15 @@
   stdenv,
   writeTextFile,
   writeShellApplication,
-  symlinkJoin,
-  caddy,
+  static-web-server,
   swagger-ui-dist,
   manual-dist,
+  specs-dist,
 }:
 
 let
   all-site = stdenv.mkDerivation (finalAttrs: {
-    pname = "api-docs-all-site";
-    version = "0.0.0";
+    name = "api-docs-all-site";
 
     phases = [ "installPhase" ];
 
@@ -27,74 +26,36 @@ let
       cp -r ${manual-dist}/* $out/manual/
 
       mkdir $out/specs
-      cp -r ${./specs}/* $out/specs/
+      cp -r ${specs-dist}/* $out/specs/
 
       runHook postInstall
     '';
   });
 
-  caddyfile = writeTextFile {
-    name = "Caddyfile";
+  configFile = writeTextFile {
+    name = "sws.toml";
     text = ''
-      http://192.168.7.133, :2080 {
-         vars upstream_prefix /docs
+      [general]
+      host = "::"
+      root = "${all-site}"
+      log-level = "info"
 
-         redir /manual {vars.upstream_prefix}/manual/
-         redir /swagger-ui {vars.upstream_prefix}/swagger-ui/
-         redir /specs {vars.upstream_prefix}/specs/
-         redir / {vars.upstream_prefix}/manual/
+      directory-listing = false
 
-         handle_path /manual/* {
-             root * ${all-site}/manual
-             file_server
-         }
+      [advanced]
 
-         handle_path /swagger-ui/* {
-             root * ${all-site}/swagger-ui
-             file_server
-         }
-
-         handle_path /specs/* {
-             root * ${all-site}/specs
-             file_server browse
-         }
-      }
-    '';
-  };
-
-  run = writeShellApplication {
-    name = "api-docs-run";
-    runtimeInputs = [ caddy ];
-    text = ''
-      set -e
-      exec caddy run --config ${caddyfile} --adapter caddyfile
-    '';
-  };
-
-  start = writeShellApplication {
-    name = "api-docs-start";
-    runtimeInputs = [ caddy ];
-    text = ''
-      set -e
-      exec caddy start --config ${caddyfile} --adapter caddyfile
-    '';
-  };
-
-  stop = writeShellApplication {
-    name = "api-docs-stop";
-    runtimeInputs = [ caddy ];
-    text = ''
-      set -e
-      exec caddy stop
+      [[advanced.redirects]]
+      source = "/"
+      destination = "/manual/"
+      kind = 301
     '';
   };
 in
 
-symlinkJoin {
+writeShellApplication {
   name = "api-docs";
-  paths = [
-    run
-    start
-    stop
-  ];
+  runtimeInputs = [ static-web-server ];
+  text = ''
+    exec static-web-server --config-file ${configFile} "$@"
+  '';
 }

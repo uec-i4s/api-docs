@@ -21,7 +21,6 @@
       system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        lib = pkgs.lib;
         linuxPkgs =
           if pkgs.stdenv.hostPlatform.isLinux then
             pkgs
@@ -37,8 +36,9 @@
           let
             swagger-ui-dist = pkgs.callPackage ./swagger-ui { };
             manual-dist = pkgs.callPackage ./manual { };
+            specs-dist = pkgs.callPackage ./specs { };
             api-docs = pkgs.callPackage ./api-docs.nix {
-              inherit swagger-ui-dist manual-dist;
+              inherit swagger-ui-dist manual-dist specs-dist;
             };
             dockerImage = pkgs.dockerTools.buildImage {
               name = "api-docs";
@@ -48,11 +48,12 @@
                   (callPackage ./api-docs.nix {
                     swagger-ui-dist = callPackage ./swagger-ui { };
                     manual-dist = callPackage ./manual { };
+                    specs-dist = callPackage ./specs { };
                   })
                 ];
               };
               config = {
-                Cmd = [ "/bin/api-docs-run" ];
+                Cmd = [ "/bin/api-docs" ];
                 Expose = [ "80:80" ];
               };
             };
@@ -61,59 +62,22 @@
             inherit
               swagger-ui-dist
               manual-dist
+              specs-dist
               api-docs
               dockerImage
               ;
             default = api-docs;
           };
 
-        apps =
-          let
-            api-docs = self.packages.${system}.api-docs;
-            getExe = lib.getExe;
-          in
-          {
-            run = {
-              type = "app";
-              program = "${api-docs}/bin/api-docs-run";
-            };
-
-            start = {
-              type = "app";
-              program = "${api-docs}/bin/api-docs-start";
-            };
-
-            stop = {
-              type = "app";
-              program = "${api-docs}/bin/api-docs-stop";
-            };
-
-            default = {
-              type = "app";
-              program = toString (
-                pkgs.writeShellScript "chose-api-docs-cmd" ''
-                  choose=$(${getExe pkgs.gum} choose --header="" \
-                    --cursor-prefix='○ ' --selected-prefix='● ' --unselected-prefix='○ ' \
-                    --cursor.foreground='75' --selected.foreground='75' \
-                    'caddy run' 'caddy start' 'caddy stop')
-                  case "$choose" in
-                    'caddy run')   exec sudo ${api-docs}/bin/api-docs-run ;;
-                    'caddy start') exec sudo ${api-docs}/bin/api-docs-start ;;
-                    'caddy stop')  exec sudo ${api-docs}/bin/api-docs-stop ;;
-                  esac
-                ''
-              );
-            };
-          };
-
         devShells.default = pkgs.mkShellNoCC {
           packages = with pkgs; [
-            caddy
+            static-web-server
             mdbook
             nodejs_24
             pnpm
             nil
             typescript-language-server
+            vscode-json-languageserver
           ];
         };
 
@@ -121,6 +85,13 @@
           projectRootFile = "flake.nix";
           programs = {
             nixfmt.enable = true;
+            prettier = {
+              enable = true;
+              includes = [
+                "*.md"
+                "*.html"
+              ];
+            };
           };
         };
       }

@@ -5,8 +5,7 @@
 }:
 
 stdenv.mkDerivation (finalAttrs: {
-  pname = "manual";
-  version = "0.0.0";
+  name = "manual-dist";
 
   src = lib.cleanSource ./.;
 
