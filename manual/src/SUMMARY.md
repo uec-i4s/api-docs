@@ -1,9 +1,13 @@
 # Summary
 
-[README](README.md)
+[はじめに](README.md)
 
-# Swagger UI の使い方
+# API を利用する
 
-- [Chapter 1](chapter_1.md)
+- [Swager UI の使い方](./use-api/swagger-ui-usage.md)
+- [AIA サーバー](./use-api/server-aia.md)
+- [OMRON サーバー](./use-api/server-omron.md)
 
-# 開発者向け
+# MCP を利用する
+
+- [準備中](./use-mcp/TODO.md)
