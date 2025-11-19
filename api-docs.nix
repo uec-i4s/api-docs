@@ -2,10 +2,10 @@
   stdenv,
   writeTextFile,
   writeShellApplication,
-  symlinkJoin,
-  caddy,
+  static-web-server,
   swagger-ui-dist,
   manual-dist,
+  specs-dist,
 }:
 
 let
@@ -27,74 +27,45 @@ let
       cp -r ${manual-dist}/* $out/manual/
 
       mkdir $out/specs
-      cp -r ${./specs}/* $out/specs/
+      cp -r ${specs-dist}/* $out/specs/
 
       runHook postInstall
     '';
   });
 
-  caddyfile = writeTextFile {
-    name = "Caddyfile";
+  configFile = writeTextFile {
+    name = "sws.toml";
     text = ''
-      http://192.168.7.133, :2080 {
-         vars upstream_prefix /docs
+      [general]
+      host = "::"
+      # Port will be specified via command line argument
+      root = "${all-site}"
+      log-level = "info"
 
-         redir /manual {vars.upstream_prefix}/manual/
-         redir /swagger-ui {vars.upstream_prefix}/swagger-ui/
-         redir /specs {vars.upstream_prefix}/specs/
-         redir / {vars.upstream_prefix}/manual/
+      # Enable directory listing for /specs
+      directory-listing = false
 
-         handle_path /manual/* {
-             root * ${all-site}/manual
-             file_server
-         }
+      [advanced]
+      # Redirect / to /manual/
+      [[advanced.redirects]]
+      source = "/"
+      destination = "/manual/"
+      kind = 301
 
-         handle_path /swagger-ui/* {
-             root * ${all-site}/swagger-ui
-             file_server
-         }
-
-         handle_path /specs/* {
-             root * ${all-site}/specs
-             file_server browse
-         }
-      }
-    '';
-  };
-
-  run = writeShellApplication {
-    name = "api-docs-run";
-    runtimeInputs = [ caddy ];
-    text = ''
-      set -e
-      exec caddy run --config ${caddyfile} --adapter caddyfile
-    '';
-  };
-
-  start = writeShellApplication {
-    name = "api-docs-start";
-    runtimeInputs = [ caddy ];
-    text = ''
-      set -e
-      exec caddy start --config ${caddyfile} --adapter caddyfile
-    '';
-  };
-
-  stop = writeShellApplication {
-    name = "api-docs-stop";
-    runtimeInputs = [ caddy ];
-    text = ''
-      set -e
-      exec caddy stop
+      # Enable directory listing only for /specs
+      [[advanced.virtual-hosts]]
+      host = "*"
+      root = "${all-site}"
     '';
   };
 in
 
-symlinkJoin {
+writeShellApplication {
   name = "api-docs";
-  paths = [
-    run
-    start
-    stop
-  ];
+  runtimeInputs = [ static-web-server ];
+  text = ''
+    # Pass all arguments to static-web-server
+    # The config file sets most options, but port can be overridden via CLI
+    exec static-web-server --config-file ${configFile} "$@"
+  '';
 }
