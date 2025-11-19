@@ -5,12 +5,12 @@ stdenv.mkDerivation {
   src = ./.;
 
   installPhase = ''
+    runHook preInstall
+
     mkdir -p $out
-
-    # Copy index.html to root
-    cp ${./index.html} $out/index.html
-
-    # Copy all YAML files from src/ to root of output
+    cp src/index.html $out/index.html
     cp src/*.yaml $out/
+
+    runHook postInstall
   '';
 }

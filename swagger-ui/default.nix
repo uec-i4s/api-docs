@@ -6,7 +6,7 @@
 }:
 
 stdenv.mkDerivation (finalAttrs: {
-  pname = "swagger-ui";
+  pname = "swagger-ui-dist";
   version = "0.0.0";
 
   src = lib.cleanSource ./.;
@@ -18,7 +18,7 @@ stdenv.mkDerivation (finalAttrs: {
 
   postPatch = ''
     rm public/specs
-    ln -s ${../specs} public/specs
+    cp -r ${../specs/src} public/specs
   '';
 
   pnpmDeps = pnpm.fetchDeps {

@@ -21,7 +21,6 @@
       system:
       let
         pkgs = nixpkgs.legacyPackages.${system};
-        lib = pkgs.lib;
         linuxPkgs =
           if pkgs.stdenv.hostPlatform.isLinux then
             pkgs
@@ -69,8 +68,6 @@
               ;
             default = api-docs;
           };
-
-
 
         devShells.default = pkgs.mkShellNoCC {
           packages = with pkgs; [

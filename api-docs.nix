@@ -10,8 +10,7 @@
 
 let
   all-site = stdenv.mkDerivation (finalAttrs: {
-    pname = "api-docs-all-site";
-    version = "0.0.0";
+    name = "api-docs-all-site";
 
     phases = [ "installPhase" ];
 
@@ -38,24 +37,17 @@ let
     text = ''
       [general]
       host = "::"
-      # Port will be specified via command line argument
       root = "${all-site}"
       log-level = "info"
 
-      # Enable directory listing for /specs
       directory-listing = false
 
       [advanced]
-      # Redirect / to /manual/
+
       [[advanced.redirects]]
       source = "/"
       destination = "/manual/"
       kind = 301
-
-      # Enable directory listing only for /specs
-      [[advanced.virtual-hosts]]
-      host = "*"
-      root = "${all-site}"
     '';
   };
 in
@@ -64,8 +56,6 @@ writeShellApplication {
   name = "api-docs";
   runtimeInputs = [ static-web-server ];
   text = ''
-    # Pass all arguments to static-web-server
-    # The config file sets most options, but port can be overridden via CLI
     exec static-web-server --config-file ${configFile} "$@"
   '';
 }
