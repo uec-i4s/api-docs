@@ -2,7 +2,7 @@
 
 TODO: 簡潔な説明文
 
-v2 が運用中です。v1 は非推奨となっています。
+v2 を運用中です。v1 は非推奨となっています。
 
 [Swagger UI - AIA v2](http://openapi.i4s.uec.ac.jp/docs/swagger-ui/?urls.primaryName=AIA+v2)
 
