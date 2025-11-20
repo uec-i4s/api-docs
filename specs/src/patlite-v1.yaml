@@ -18,13 +18,13 @@ tags:
   - name: Patlite
     description: Patlite control operations
 paths:
-  /v1/w9/Patlite:
+  /v1/Patlite:
     put:
       tags:
         - Patlite
       summary: Send request to patlite device
       description: Send request to patlite device
-      operationId: send_patlite_v1_w9_Patlite__put
+      operationId: send_patlite_v1_Patlite__put
       security:
         - BearerAuth: []
       parameters:
@@ -102,13 +102,13 @@ paths:
                 $ref: '#/components/schemas/ValidationError'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  /v1/w9/Patlite/clear:
+  /v1/Patlite/clear:
     put:
       tags:
         - Patlite
       summary: Turn off patlite
       description: Turn off patlite
-      operationId: clear_patlite_v1_w9_Patlite_clear_put
+      operationId: clear_patlite_v1_Patlite_clear_put
       security:
         - BearerAuth: []
       parameters:
