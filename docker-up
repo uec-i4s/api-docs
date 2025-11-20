@@ -15,7 +15,7 @@ step() {
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
-step "Patching..."
+step 'Patching for front-reverse-proxy configuration...'
 patch -p1 << 'EOF'
 diff --git a/api-docs.nix b/api-docs.nix
 index 77aaa85..26ab393 100644
