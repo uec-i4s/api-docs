@@ -15,6 +15,36 @@ step() {
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
+step 'Patching for front-reverse-proxy configuration...'
+patch -p1 << 'EOF'
+diff --git a/api-docs.nix b/api-docs.nix
+index 77aaa85..26ab393 100644
+--- a/api-docs.nix
++++ b/api-docs.nix
+@@ -50,7 +50,7 @@ let
+
+       [[advanced.redirects]]
+       source = "/"
+-      destination = "/manual/"
++      destination = "/docs/manual/"
+       kind = 301
+     '';
+   };
+diff --git a/swagger-ui/vite.config.ts b/swagger-ui/vite.config.ts
+index 514a0f4..f63a7d9 100644
+--- a/swagger-ui/vite.config.ts
++++ b/swagger-ui/vite.config.ts
+@@ -1,7 +1,7 @@
+ import { defineConfig } from 'vite'
+
+ export default defineConfig({
+-  base: "/swagger-ui/",
++  base: "/docs/swagger-ui/",
+   preview: {
+     host: true,
+     port: 8001,
+EOF
+
 step "Building Docker image with Nix..."
 nix build .#dockerImage -o result
 
