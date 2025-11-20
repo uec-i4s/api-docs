@@ -2,6 +2,7 @@
   lib,
   stdenv,
   mdbook,
+  ruby,
 }:
 
 stdenv.mkDerivation (finalAttrs: {
@@ -11,7 +12,13 @@ stdenv.mkDerivation (finalAttrs: {
 
   nativeBuildInputs = [
     mdbook
+    ruby
   ];
+
+  postPatch = ''
+    rm preprocess/specs-src
+    cp -r ${../specs/src} preprocess/specs-src
+  '';
 
   buildPhase = ''
     runHook preBuild

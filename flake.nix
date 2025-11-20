@@ -73,6 +73,8 @@
           packages = with pkgs; [
             static-web-server
             mdbook
+            ruby
+            rubyPackages.solargraph
             nodejs_24
             pnpm
             nil
