@@ -1,119 +1,119 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>API Specifications</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background-color: #f5f5f5;
-            padding: 2rem;
-        }
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        h1 {
-            color: #2c3e50;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid #3498db;
-        }
-        h2 {
-            margin-top: 3rem;
-        }
-        .description {
-            margin-bottom: 2rem;
-            color: #666;
-        }
-        .spec-list {
-            list-style: none;
-        }
-        .spec-item {
-            margin-bottom: 0.75rem;
-            padding: 1rem;
-            background: #f8f9fa;
-            border-radius: 4px;
-            transition: background-color 0.2s;
-        }
-        .spec-item:hover {
-            background: #e9ecef;
-        }
-        .spec-link {
-            color: #3498db;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 1.1rem;
-        }
-        .spec-link:hover {
-            text-decoration: underline;
-        }
-        .spec-description {
-            color: #666;
-            font-size: 0.9rem;
-            margin-top: 0.25rem;
-        }
-        .spec-list.deprecated .spec-item:hover {
-            background: #fff1bb;
-        }
-        .spec-list.deprecated .spec-link {
-            color: #856404;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family:
+          -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          "Helvetica Neue", Arial, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background-color: #f5f5f5;
+        padding: 2rem;
+      }
+      .container {
+        max-width: 900px;
+        margin: 0 auto;
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        color: #2c3e50;
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #3498db;
+      }
+      h2 {
+        margin-top: 3rem;
+      }
+      .description {
+        margin-bottom: 2rem;
+        color: #666;
+      }
+      .spec-list {
+        list-style: none;
+      }
+      .spec-item {
+        margin-bottom: 0.75rem;
+        padding: 1rem;
+        background: #f8f9fa;
+        border-radius: 4px;
+        transition: background-color 0.2s;
+      }
+      .spec-item:hover {
+        background: #e9ecef;
+      }
+      .spec-link {
+        color: #3498db;
+        text-decoration: none;
+        font-weight: 500;
+        font-size: 1.1rem;
+      }
+      .spec-link:hover {
+        text-decoration: underline;
+      }
+      .spec-description {
+        color: #666;
+        font-size: 0.9rem;
+        margin-top: 0.25rem;
+      }
+      .spec-list.deprecated .spec-item:hover {
+        background: #fff1bb;
+      }
+      .spec-list.deprecated .spec-link {
+        color: #856404;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="container">
-        <h1>API Specifications</h1>
-        <p class="description">
-            利用可能なAPI仕様書（OpenAPI形式）の一覧です。各ファイルをクリックしてダウンロードまたは閲覧できます。
-        </p>
-
-        <ul class="spec-list">
-            <li class="spec-item">
-                <a href="/specs/aia-v2.yaml" class="spec-link">aia-v2.yaml</a>
-                <div class="spec-description">AIA API仕様書 (v2)</div>
-            </li>
-            <li class="spec-item">
-                <a href="/specs/e36-v1.yaml" class="spec-link">e36-v1.yaml</a>
-                <div class="spec-description">E36 API仕様書 (v1)</div>
-            </li>
-            <li class="spec-item">
-                <a href="/specs/omron-v1.yaml" class="spec-link">omron-v1.yaml</a>
-                <div class="spec-description">OMRON API仕様書 (v1)</div>
-            </li>
-            <li class="spec-item">
-                <a href="/specs/omron-v2.yaml" class="spec-link">omron-v2.yaml</a>
-                <div class="spec-description">OMRON API仕様書 (v2)</div>
-            </li>
-            <li class="spec-item">
-                <a href="/specs/patlite-v1.yaml" class="spec-link">patlite-v1.yaml</a>
-                <div class="spec-description">Patlite API仕様書 (v1)</div>
-            </li>
-            <li class="spec-item">
-                <a href="/specs/w9-v1.yaml" class="spec-link">w9-v1.yaml</a>
-                <div class="spec-description">W9 API仕様書 (v1)</div>
-            </li>
-        </ul>
-
-        <h2>非推奨版 (Deprecated)</h2>
-        <ul class="spec-list deprecated">
-            <li class="spec-item">
-                <a href="/specs/aia-v1.yaml" class="spec-link">aia-v1.yaml</a>
-                <div class="spec-description">AIA API仕様書 (v1) - 非推奨</div>
-            </li>
-        </ul>
+      <h1>API Specifications</h1>
+      <p class="description">
+        利用可能なAPI仕様書（OpenAPI形式）の一覧です。各ファイルをクリックしてダウンロードまたは閲覧できます。
+      </p>
+      <ul class="spec-list">
+        <li class="spec-item">
+          <a href="/specs/aia-v2.yaml" class="spec-link">aia-v2.yaml</a>
+          <div class="spec-description">AIA API仕様書 (v2)</div>
+        </li>
+        <li class="spec-item">
+          <a href="/specs/e36-v1.yaml" class="spec-link">e36-v1.yaml</a>
+          <div class="spec-description">E36 API仕様書 (v1)</div>
+        </li>
+        <li class="spec-item">
+          <a href="/specs/omron-v1.yaml" class="spec-link">omron-v1.yaml</a>
+          <div class="spec-description">OMRON API仕様書 (v1)</div>
+        </li>
+        <li class="spec-item">
+          <a href="/specs/omron-v2.yaml" class="spec-link">omron-v2.yaml</a>
+          <div class="spec-description">OMRON API仕様書 (v2)</div>
+        </li>
+        <li class="spec-item">
+          <a href="/specs/patlite-v1.yaml" class="spec-link">patlite-v1.yaml</a>
+          <div class="spec-description">Patlite API仕様書 (v1)</div>
+        </li>
+        <li class="spec-item">
+          <a href="/specs/w9-v1.yaml" class="spec-link">w9-v1.yaml</a>
+          <div class="spec-description">W9 API仕様書 (v1)</div>
+        </li>
+      </ul>
+      <h2>非推奨版 (Deprecated)</h2>
+      <ul class="spec-list deprecated">
+        <li class="spec-item">
+          <a href="/specs/aia-v1.yaml" class="spec-link">aia-v1.yaml</a>
+          <div class="spec-description">AIA API仕様書 (v1) - 非推奨</div>
+        </li>
+      </ul>
     </div>
-</body>
+  </body>
 </html>

@@ -16,7 +16,7 @@ Caddy から static-web-server に乗り換える
 
 ### ビルド・配信構成 (Nix & Caddy)
 
-Nix: flake.nix と *.nix ファイルにより、依存関係（mdbook, nodejs, pnpm, caddyなど）とビルドプロセスが管理。
+Nix: flake.nix と \*.nix ファイルにより、依存関係（mdbook, nodejs, pnpm, caddyなど）とビルドプロセスが管理。
 
 - Caddy: api-docs.nix で生成される Caddyfile に基づき、以下のパスでコンテンツを配信します。
 - manual: マニュアル

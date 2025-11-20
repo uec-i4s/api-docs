@@ -77,6 +77,7 @@
             pnpm
             nil
             typescript-language-server
+            vscode-json-languageserver
           ];
         };
 
@@ -84,6 +85,13 @@
           projectRootFile = "flake.nix";
           programs = {
             nixfmt.enable = true;
+            prettier = {
+              enable = true;
+              includes = [
+                "*.md"
+                "*.html"
+              ];
+            };
           };
         };
       }
