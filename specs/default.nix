@@ -8,7 +8,7 @@ stdenv.mkDerivation {
     runHook preInstall
 
     mkdir -p $out
-    cp src/index.html $out/index.html
+    cp index.html $out/index.html
     cp src/*.yaml $out/
 
     runHook postInstall
