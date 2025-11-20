@@ -15,6 +15,11 @@ step() {
 
 cd "$(dirname "${BASH_SOURCE[0]}")"
 
+if ! git diff --quiet; then
+  echo 'Error: There are uncommitted changes in the repository.' >&2
+  exit 1
+fi
+
 step 'Patching for front-reverse-proxy configuration...'
 patch -p1 << 'EOF'
 diff --git a/api-docs.nix b/api-docs.nix
@@ -47,6 +52,9 @@ EOF
 
 step 'Building Docker image with Nix...'
 nix build .#dockerImage -o result
+
+step 'Removing patch...'
+git restore .
 
 step 'Loading Docker image...'
 load_output=$(docker load < ./result)
