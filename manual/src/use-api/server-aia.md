@@ -8,5 +8,4 @@ v2 を運用中です。v1 は非推奨となっています。
 
 ## エンドポイント一覧 (v2)
 
-
 <!-- preprocess: list-endpoint aia-v2.yaml -->
