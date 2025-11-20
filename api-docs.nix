@@ -36,11 +36,15 @@ let
     name = "sws.toml";
     text = ''
       [general]
+
       host = "::"
       root = "${all-site}"
+
       log-level = "info"
+      log-with-ansi = true
 
       directory-listing = false
+      health = true
 
       [advanced]
 
