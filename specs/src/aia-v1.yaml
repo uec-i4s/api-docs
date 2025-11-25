@@ -33,7 +33,8 @@ paths:
       operationId: getHealth
       tags:
         - health
-      security: []
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: Server is healthy
@@ -42,6 +43,8 @@ paths:
               schema:
                 type: string
                 example: OK
+        '401':
+          $ref: '#/components/responses/Unauthorized'
   /v1/AIA/aircon:
     get:
       tags:
@@ -273,6 +276,21 @@ components:
       bearerFormat: JWT
       description: Bearer token authentication
   schemas:
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - message
+      properties:
+        error:
+          type: string
+          example: INVALID_REQUEST
+        message:
+          type: string
+          example: The request parameters are invalid
+        details:
+          type: object
+          additionalProperties: true
     AirconUlid:
       type: string
       example: 01JBGZV7E89TBDXS6Z8HE3A2J6
@@ -298,21 +316,6 @@ components:
           $ref: '#/components/schemas/AirconTemperature'
         mode:
           $ref: '#/components/schemas/AirconMode'
-    ErrorResponse:
-      type: object
-      required:
-        - error
-        - message
-      properties:
-        error:
-          type: string
-          example: INVALID_REQUEST
-        message:
-          type: string
-          example: The request parameters are invalid
-        details:
-          type: object
-          additionalProperties: true
     LightUlid:
       type: string
       example: 01JBGZV74JHG440RVECVT8TMAA

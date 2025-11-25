@@ -49,7 +49,8 @@ paths:
       operationId: getHealth
       tags:
         - health
-      security: []
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: Server is healthy
@@ -58,6 +59,8 @@ paths:
               schema:
                 type: string
                 example: OK
+        '401':
+          $ref: '#/components/responses/Unauthorized'
   /co2:
     get:
       tags:
@@ -70,7 +73,7 @@ paths:
         '200':
           $ref: '#/components/responses/DeviceList'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/4xx_Unauthorized'
         '502':
           $ref: '#/components/responses/BadGateway'
         '504':
@@ -98,7 +101,7 @@ paths:
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/4xx_Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '502':
@@ -123,7 +126,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/CO2Data'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/4xx_Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '502':
@@ -142,7 +145,7 @@ paths:
         '200':
           $ref: '#/components/responses/DeviceList'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/4xx_Unauthorized'
         '502':
           $ref: '#/components/responses/BadGateway'
         '504':
@@ -170,7 +173,7 @@ paths:
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/4xx_Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '502':
@@ -195,7 +198,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/TemperatureData'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/4xx_Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '502':
@@ -214,7 +217,7 @@ paths:
         '200':
           $ref: '#/components/responses/DeviceList'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/4xx_Unauthorized'
         '502':
           $ref: '#/components/responses/BadGateway'
         '504':
@@ -242,7 +245,7 @@ paths:
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/4xx_Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '502':
@@ -267,7 +270,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/HumidityData'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/4xx_Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '502':
@@ -286,7 +289,7 @@ paths:
         '200':
           $ref: '#/components/responses/DeviceList'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/4xx_Unauthorized'
         '502':
           $ref: '#/components/responses/BadGateway'
         '504':
@@ -314,7 +317,7 @@ paths:
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/4xx_Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '502':
@@ -339,7 +342,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/PressureData'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/4xx_Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '502':
@@ -358,7 +361,7 @@ paths:
         '200':
           $ref: '#/components/responses/DeviceList'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/4xx_Unauthorized'
         '502':
           $ref: '#/components/responses/BadGateway'
         '504':
@@ -386,7 +389,7 @@ paths:
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/4xx_Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '502':
@@ -411,7 +414,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/LightData'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/4xx_Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '502':
@@ -430,7 +433,7 @@ paths:
         '200':
           $ref: '#/components/responses/DeviceList'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/4xx_Unauthorized'
         '502':
           $ref: '#/components/responses/BadGateway'
         '504':
@@ -458,7 +461,7 @@ paths:
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/4xx_Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '502':
@@ -483,7 +486,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/SoundData'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/4xx_Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '502':
@@ -502,7 +505,7 @@ paths:
         '200':
           $ref: '#/components/responses/DeviceList'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/4xx_Unauthorized'
         '502':
           $ref: '#/components/responses/BadGateway'
         '504':
@@ -530,7 +533,7 @@ paths:
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/4xx_Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '502':
@@ -555,7 +558,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/DiscomfortIndexData'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/4xx_Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '502':
@@ -574,7 +577,7 @@ paths:
         '200':
           $ref: '#/components/responses/DeviceList'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/4xx_Unauthorized'
         '502':
           $ref: '#/components/responses/BadGateway'
         '504':
@@ -602,7 +605,7 @@ paths:
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/4xx_Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '502':
@@ -627,7 +630,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/HeatstrokeData'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/4xx_Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '502':
@@ -646,7 +649,7 @@ paths:
         '200':
           $ref: '#/components/responses/DeviceList'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/4xx_Unauthorized'
         '502':
           $ref: '#/components/responses/BadGateway'
         '504':
@@ -674,7 +677,7 @@ paths:
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/4xx_Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '502':
@@ -699,7 +702,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ETVOCData'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/4xx_Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '502':
@@ -718,7 +721,7 @@ paths:
         '200':
           $ref: '#/components/responses/DeviceList'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/4xx_Unauthorized'
         '502':
           $ref: '#/components/responses/BadGateway'
         '504':
@@ -746,7 +749,7 @@ paths:
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/4xx_Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '502':
@@ -771,7 +774,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/HumanDetectionData'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/4xx_Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '502':
@@ -790,7 +793,7 @@ paths:
         '200':
           $ref: '#/components/responses/DeviceList'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/4xx_Unauthorized'
         '502':
           $ref: '#/components/responses/BadGateway'
         '504':
@@ -818,7 +821,7 @@ paths:
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/4xx_Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '502':
@@ -843,7 +846,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/NumOfPeopleData'
         '401':
-          $ref: '#/components/responses/Unauthorized'
+          $ref: '#/components/responses/4xx_Unauthorized'
         '404':
           $ref: '#/components/responses/NotFound'
         '502':
@@ -858,6 +861,21 @@ components:
       bearerFormat: JWT
       description: Bearer token authentication
   schemas:
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - message
+      properties:
+        error:
+          type: string
+          example: INVALID_REQUEST
+        message:
+          type: string
+          example: The request parameters are invalid
+        details:
+          type: object
+          additionalProperties: true
     DeviceList:
       type: object
       required:
@@ -890,7 +908,7 @@ components:
               room:
                 type: string
                 example: A-101
-    ErrorResponse:
+    response_ErrorResponse:
       type: object
       required:
         - title
@@ -1186,18 +1204,27 @@ components:
             $ref: '#/components/schemas/NumOfPeopleData'
           description: 人数カウントセンサーデータの配列
   responses:
+    Unauthorized:
+      description: Unauthorized - 認証が必要です
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+          example:
+            error: UNAUTHORIZED
+            message: 有効な認証トークンが必要です
     DeviceList:
       description: Successful response
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/DeviceList'
-    Unauthorized:
+    4xx_Unauthorized:
       description: Unauthorized
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: '#/components/schemas/response_ErrorResponse'
           example:
             title: Unauthorized
             detail: 認証情報が不足しています
@@ -1206,7 +1233,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: '#/components/schemas/response_ErrorResponse'
           example:
             title: Bad Gateway
             detail: 外部サービスとの通信に失敗しました
@@ -1215,7 +1242,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: '#/components/schemas/response_ErrorResponse'
           example:
             title: Gateway Timeout
             detail: 外部サービスからの応答がタイムアウトしました
@@ -1224,7 +1251,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: '#/components/schemas/response_ErrorResponse'
           example:
             title: Bad Request
             detail: リクエストの形式が正しくありません
@@ -1233,7 +1260,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ErrorResponse'
+            $ref: '#/components/schemas/response_ErrorResponse'
           example:
             title: Not Found
             detail: 指定されたULIDのデバイスが見つかりません

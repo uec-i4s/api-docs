@@ -27,7 +27,8 @@ paths:
       operationId: getHealth
       tags:
         - health
-      security: []
+      security:
+        - BearerAuth: []
       responses:
         '200':
           description: Server is healthy
@@ -36,6 +37,8 @@ paths:
               schema:
                 type: string
                 example: OK
+        '401':
+          $ref: '#/components/responses/Unauthorized'
   /v1/Patlite:
     put:
       tags:
@@ -163,6 +166,21 @@ components:
       bearerFormat: Credentials or access token for API
       description: Bearer token authentication
   schemas:
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - message
+      properties:
+        error:
+          type: string
+          example: INVALID_REQUEST
+        message:
+          type: string
+          example: The request parameters are invalid
+        details:
+          type: object
+          additionalProperties: true
     PatliteUlid:
       type: string
       description: パトライトをULIDで指定する。
@@ -191,21 +209,6 @@ components:
         succeed:
           type: boolean
           description: 操作が成功したかどうか
-    ErrorResponse:
-      type: object
-      required:
-        - error
-        - message
-      properties:
-        error:
-          type: string
-          example: INVALID_REQUEST
-        message:
-          type: string
-          example: The request parameters are invalid
-        details:
-          type: object
-          additionalProperties: true
     ValidationError:
       type: object
       properties:

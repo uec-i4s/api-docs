@@ -49,7 +49,8 @@ paths:
       operationId: getHealth
       tags:
         - health
-      security: []
+      security:
+        - bearerAuth: []
       responses:
         '200':
           description: Server is healthy
@@ -58,6 +59,8 @@ paths:
               schema:
                 type: string
                 example: OK
+        '401':
+          $ref: '#/components/responses/Unauthorized'
   /v1/co2:
     get:
       tags:
@@ -604,124 +607,22 @@ components:
       scheme: bearer
       bearerFormat: JWT
       description: Bearer token authentication
-  parameters:
-    co2Ulid:
-      in: query
-      name: ulid
-      required: true
-      schema:
-        type: string
-        example: 01J9K731SX5KPGR1VMZNYM8HXA
-      description: CO2センサーのULID識別子
-    dataInterval:
-      in: query
-      name: interval
-      required: true
-      schema:
-        type: integer
-        minimum: 1
-        maximum: 86400
-        example: 180
-      description: データ取得間隔（秒）
-    startDateTime:
-      in: query
-      name: since
-      required: true
-      schema:
-        type: string
-        format: date-time
-        example: '2024-11-01 12:00:00'
-      description: '取得するデータの開始期間（JST、形式: yyyy-MM-dd HH:mm:ss）'
-    endDateTime:
-      in: query
-      name: until
-      required: true
-      schema:
-        type: string
-        format: date-time
-        example: '2024-11-01 15:00:00'
-      description: '取得するデータの終了期間（JST、形式: yyyy-MM-dd HH:mm:ss）'
-    discomfortIndexUlid:
-      in: query
-      name: ulid
-      required: true
-      schema:
-        type: string
-        example: 01J9K72YH498QKTRCHVRKBE53H
-      description: 不快指数センサーのULID識別子
-    etvocUlid:
-      in: query
-      name: ulid
-      required: true
-      schema:
-        type: string
-        example: 01J9K72Z0C37HXF9F86R0DYM4E
-      description: ETVOCセンサーのULID識別子
-    heatstrokeUlid:
-      in: query
-      name: ulid
-      required: true
-      schema:
-        type: string
-        example: 01J9K730WK6GB3HZ12NS3MD4D2
-      description: 熱中症センサーのULID識別子
-    humanDetectionUlid:
-      in: query
-      name: ulid
-      required: true
-      schema:
-        type: string
-        example: 01J9K72Y8Q479W1JMRF3KNVFMV
-      description: 人検知センサーのULID識別子
-    humidityUlid:
-      in: query
-      name: ulid
-      required: true
-      schema:
-        type: string
-        example: 01J9K730CN88T3SSH8QKVE4FT9
-      description: 湿度センサーのULID識別子
-    lightUlid:
-      in: query
-      name: ulid
-      required: true
-      schema:
-        type: string
-        example: 01J9K730ZZ06JXE4JC2VZMJGDK
-      description: 照度センサーのULID識別子
-    numOfPeopleUlid:
-      in: query
-      name: ulid
-      required: true
-      schema:
-        type: string
-        example: 01J9K730RSJNAKNAG2PP3BQHDK
-      description: 人数カウントセンサーのULID識別子
-    pressureUlid:
-      in: query
-      name: ulid
-      required: true
-      schema:
-        type: string
-        example: 01J9K7303GCBDRDY2N03NY75GJ
-      description: 気圧センサーのULID識別子
-    soundUlid:
-      in: query
-      name: ulid
-      required: true
-      schema:
-        type: string
-        example: 01J9K7308T878MARC64Q84VSSF
-      description: 音圧レベルセンサーのULID識別子
-    temperatureUlid:
-      in: query
-      name: ulid
-      required: true
-      schema:
-        type: string
-        example: 01J9K72YCJH6R0YG1S271XFYN6
-      description: 温度センサーのULID識別子
   schemas:
+    ErrorResponse:
+      type: object
+      required:
+        - error
+        - message
+      properties:
+        error:
+          type: string
+          example: INVALID_REQUEST
+        message:
+          type: string
+          example: The request parameters are invalid
+        details:
+          type: object
+          additionalProperties: true
     ResponseInfo:
       type: object
       required:
@@ -786,21 +687,6 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/CO2DataItem'
-    ErrorResponse:
-      type: object
-      required:
-        - error
-        - message
-      properties:
-        error:
-          type: string
-          example: INVALID_REQUEST
-        message:
-          type: string
-          example: The request parameters are invalid
-        details:
-          type: object
-          additionalProperties: true
     DiscomfortIndexDataItem:
       allOf:
         - $ref: '#/components/schemas/BaseDataItem'
@@ -1055,3 +941,120 @@ components:
           example:
             error: INTERNAL_SERVER_ERROR
             message: サーバー内部でエラーが発生しました
+  parameters:
+    co2Ulid:
+      in: query
+      name: ulid
+      required: true
+      schema:
+        type: string
+        example: 01J9K731SX5KPGR1VMZNYM8HXA
+      description: CO2センサーのULID識別子
+    dataInterval:
+      in: query
+      name: interval
+      required: true
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 86400
+        example: 180
+      description: データ取得間隔（秒）
+    startDateTime:
+      in: query
+      name: since
+      required: true
+      schema:
+        type: string
+        format: date-time
+        example: '2024-11-01 12:00:00'
+      description: '取得するデータの開始期間（JST、形式: yyyy-MM-dd HH:mm:ss）'
+    endDateTime:
+      in: query
+      name: until
+      required: true
+      schema:
+        type: string
+        format: date-time
+        example: '2024-11-01 15:00:00'
+      description: '取得するデータの終了期間（JST、形式: yyyy-MM-dd HH:mm:ss）'
+    discomfortIndexUlid:
+      in: query
+      name: ulid
+      required: true
+      schema:
+        type: string
+        example: 01J9K72YH498QKTRCHVRKBE53H
+      description: 不快指数センサーのULID識別子
+    etvocUlid:
+      in: query
+      name: ulid
+      required: true
+      schema:
+        type: string
+        example: 01J9K72Z0C37HXF9F86R0DYM4E
+      description: ETVOCセンサーのULID識別子
+    heatstrokeUlid:
+      in: query
+      name: ulid
+      required: true
+      schema:
+        type: string
+        example: 01J9K730WK6GB3HZ12NS3MD4D2
+      description: 熱中症センサーのULID識別子
+    humanDetectionUlid:
+      in: query
+      name: ulid
+      required: true
+      schema:
+        type: string
+        example: 01J9K72Y8Q479W1JMRF3KNVFMV
+      description: 人検知センサーのULID識別子
+    humidityUlid:
+      in: query
+      name: ulid
+      required: true
+      schema:
+        type: string
+        example: 01J9K730CN88T3SSH8QKVE4FT9
+      description: 湿度センサーのULID識別子
+    lightUlid:
+      in: query
+      name: ulid
+      required: true
+      schema:
+        type: string
+        example: 01J9K730ZZ06JXE4JC2VZMJGDK
+      description: 照度センサーのULID識別子
+    numOfPeopleUlid:
+      in: query
+      name: ulid
+      required: true
+      schema:
+        type: string
+        example: 01J9K730RSJNAKNAG2PP3BQHDK
+      description: 人数カウントセンサーのULID識別子
+    pressureUlid:
+      in: query
+      name: ulid
+      required: true
+      schema:
+        type: string
+        example: 01J9K7303GCBDRDY2N03NY75GJ
+      description: 気圧センサーのULID識別子
+    soundUlid:
+      in: query
+      name: ulid
+      required: true
+      schema:
+        type: string
+        example: 01J9K7308T878MARC64Q84VSSF
+      description: 音圧レベルセンサーのULID識別子
+    temperatureUlid:
+      in: query
+      name: ulid
+      required: true
+      schema:
+        type: string
+        example: 01J9K72YCJH6R0YG1S271XFYN6
+      description: 温度センサーのULID識別子
