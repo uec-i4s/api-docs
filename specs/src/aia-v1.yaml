@@ -23,7 +23,25 @@ tags:
     description: Lighting control operations
   - name: ventilator
     description: Ventilator control operations
+  - name: health
+    description: Health check operations
 paths:
+  /v1/AIA/health:
+    get:
+      summary: Health check endpoint
+      description: Returns the health status of the API server
+      operationId: getHealth
+      tags:
+        - health
+      security: []
+      responses:
+        '200':
+          description: Server is healthy
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: OK
   /v1/AIA/aircon:
     get:
       tags:

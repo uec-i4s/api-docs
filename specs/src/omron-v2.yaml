@@ -39,7 +39,25 @@ tags:
     description: Human detection sensor data operations
   - name: num-of-people
     description: Number of people detection sensor data operations
+  - name: health
+    description: Health check operations
 paths:
+  /health:
+    get:
+      summary: Health check endpoint
+      description: Returns the health status of the API server
+      operationId: getHealth
+      tags:
+        - health
+      security: []
+      responses:
+        '200':
+          description: Server is healthy
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: OK
   /co2:
     get:
       tags:
